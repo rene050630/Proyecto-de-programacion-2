@@ -1,0 +1,5 @@
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\Compiler.GeneratedMSBuildEditorConfig.editorconfig
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\Compiler.AssemblyInfoInputs.cache
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\Compiler.AssemblyInfo.cs
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\Compiler.csproj.CoreCompileInputs.cache
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\Compiler.sourcelink.json
