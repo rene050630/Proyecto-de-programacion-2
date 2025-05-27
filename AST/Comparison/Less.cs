@@ -2,11 +2,11 @@ public class Less : BinaryExpression
 {
     public override ExpressionType Type { get; set; }
     public override object? Value { get; set; }
-    public Less(CodeLocation location) : base(location){}
-    public override void Evaluate()
+    public Less(CodeLocation location) : base(location) { }
+    public override void Evaluate(ExecutionContext context)
     {
-        Right.Evaluate();
-        Left.Evaluate();
+        Right.Evaluate(context);
+        Left.Evaluate(context);
 
         Value = (double)Left.Value < (double)Right.Value;
     }
@@ -27,7 +27,7 @@ public class Less : BinaryExpression
     {
         if (Value == null)
         {
-            return String.Format("({0} < {1})", Left, Right);
+            return string.Format("({0} < {1})", Left, Right);
         }
         return Value.ToString();
     }

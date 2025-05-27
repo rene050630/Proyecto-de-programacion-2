@@ -1,8 +1,7 @@
-public class Context
+public class Context   
 {
-    public (int, int) Canvas { get; set; } // Estado del canvas
+    public Canvas Canvas { get; set; } // Estado del canvas
     public List<string> ValidColors { get; } = new List<string> { "Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Black", "White", "Transparent" };
-
     public bool IsValidColor(string color) => ValidColors.Contains(color);
     public HashSet<string> Labels { get; } = new HashSet<string>();
     private Dictionary<string, int> _labelPositions = new();
@@ -24,4 +23,20 @@ public class Context
     {
         return Labels.Contains(label);
     }
+}
+public class ExecutionContext //Eliminar esta clase y sustituir ExecutionContext context por Canvas canvas
+{
+    public Canvas Canvas { get; } = new Canvas(256); // Tamaño por defecto
+    public string BrushColor { get; set; } = "Transparent";
+    public bool IsSpawnCalled = false;
+    public int BrushSize { get; set; } = 1;
+
+    public List<string> ValidColors { get; } = new List<string> 
+    { 
+        "Red", "Blue", "Green", "Yellow", 
+        "Orange", "Purple", "Black", "White", "Transparent" 
+    };
+
+    public bool IsValidColor(string? color) 
+        => color != null && ValidColors.Contains(color);
 }

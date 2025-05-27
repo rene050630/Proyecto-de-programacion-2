@@ -3,10 +3,10 @@ public class And : BinaryExpression
     public override ExpressionType Type{get;set;}
     public override object? Value{get;set;}
     public And(CodeLocation location) : base(location) {}
-    public override void Evaluate()
+    public override void Evaluate(ExecutionContext context)
     {
-        Right.Evaluate();
-        Left.Evaluate();
+        Right.Evaluate(context);
+        Left.Evaluate(context);
         
         Value = (bool)Left.Value && (bool)Right.Value;
     }

@@ -30,7 +30,7 @@ public class Pow : BinaryExpression
     {
         if (Value == null)
         {
-            return String.Format("{0} ** {1}", Left, Right);
+            return string.Format("{0} ** {1}", Left, Right);
         }
         return Value.ToString();
     }

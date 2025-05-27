@@ -5,10 +5,10 @@ public class NotEqual : BinaryExpression
     public NotEqual(CodeLocation location) : base(location)
     {
     }
-    public override void Evaluate()
+    public override void Evaluate(ExecutionContext context)
     {
-        Right.Evaluate();
-        Left.Evaluate();
+        Right.Evaluate(context);
+        Left.Evaluate(context);
         if(Right.Type == ExpressionType.Number && Left.Type == ExpressionType.Number)
         {
             this.Value = (double)this.Left.Value != (double)this.Right.Value;
@@ -39,7 +39,7 @@ public class NotEqual : BinaryExpression
     {
         if (Value == null)
         {
-            return String.Format("({0} != {1})", Left, Right);
+            return string.Format("({0} != {1})", Left, Right);
         }
         return Value.ToString();
     }

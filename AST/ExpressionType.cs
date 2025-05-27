@@ -1,12 +1,7 @@
 public enum ExpressionType
-    {
-        Anytype,
-        Identifier,
-        Text,
-        Number,
-        Boolean,
-        List,
-        Context,
-        Function,
-        ErrorType
-    }
+{
+    Text,
+    Number,
+    Boolean,
+    ErrorType
+}

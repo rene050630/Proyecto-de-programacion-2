@@ -4,6 +4,7 @@ public class GoTo : AST
 {
     public string Label { get; }
     public Expression Condition { get; }
+    ExecutionContext Context;
     public GoTo(CodeLocation location, string label, Expression condition) : base(location)
     {
         Label = label;
@@ -31,7 +32,7 @@ public class GoTo : AST
     public void Execution(Context context)
     {
         // Evaluar la condición
-        Condition.Evaluate();
+        Condition.Evaluate(Context);
 
         if (Condition.Value is bool shouldJump && shouldJump)
         {

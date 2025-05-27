@@ -192,7 +192,7 @@ public class LexicalAnalyzer
                     return false; // Opcional: no agregar el token
                 }
     
-    return id.Length > 0;
+                return id.Length > 0;
             }
 
             public bool ReadNumber(out string number)

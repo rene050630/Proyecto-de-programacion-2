@@ -30,13 +30,13 @@ public class Number : AtomsExpression
         return true;
     }
 
-    public override void Evaluate()
+    public override void Evaluate(ExecutionContext context)
     {
         
     }
 
     public override string ToString()
     {
-        return String.Format("{0}",Value);
+        return string.Format("{0}",Value);
     }
 }

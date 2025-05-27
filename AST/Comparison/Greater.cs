@@ -3,10 +3,10 @@ public class Greater : BinaryExpression
     public override ExpressionType Type { get; set; }
     public override object? Value { get; set; }
     public Greater(CodeLocation location) : base(location){}
-    public override void Evaluate()
+    public override void Evaluate(ExecutionContext context)
     {
-        Right.Evaluate();
-        Left.Evaluate();
+        Right.Evaluate(context);
+        Left.Evaluate(context);
 
         Value = (double)Left.Value > (double)Right.Value;
     }
@@ -27,7 +27,7 @@ public class Greater : BinaryExpression
     {
         if (Value == null)
         {
-            return String.Format("({0} > {1})", Left, Right);
+            return string.Format("({0} > {1})", Left, Right);
         }
         return Value.ToString();
     }
