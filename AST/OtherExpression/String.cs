@@ -7,7 +7,7 @@ public class String : Expression
     {
         Value = value;
     }
-    public override void Evaluate(ExecutionContext context)
+    public override void Evaluate()
     {
         if (Value is string stringValue)
         {

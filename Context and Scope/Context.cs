@@ -24,19 +24,19 @@ public class Context
         return Labels.Contains(label);
     }
 }
-public class ExecutionContext //Eliminar esta clase y sustituir ExecutionContext context por Canvas canvas
-{
-    public Canvas Canvas { get; } = new Canvas(256); // Tamaño por defecto
-    public string BrushColor { get; set; } = "Transparent";
-    public bool IsSpawnCalled = false;
-    public int BrushSize { get; set; } = 1;
+// public class ExecutionContext //Eliminar esta clase y sustituir ExecutionContext context por Canvas canvas
+// {
+//     public Canvas Canvas { get; } = new Canvas(256); // Tamaño por defecto
+//     public string BrushColor { get; set; } = "Transparent";
+    
+//     public int BrushSize { get; set; } = 1;
 
-    public List<string> ValidColors { get; } = new List<string> 
-    { 
-        "Red", "Blue", "Green", "Yellow", 
-        "Orange", "Purple", "Black", "White", "Transparent" 
-    };
+//     public List<string> ValidColors { get; } = new List<string> 
+//     { 
+//         "Red", "Blue", "Green", "Yellow", 
+//         "Orange", "Purple", "Black", "White", "Transparent" 
+//     };
 
-    public bool IsValidColor(string? color) 
-        => color != null && ValidColors.Contains(color);
-}
+//     public bool IsValidColor(string? color) 
+//         => color != null && ValidColors.Contains(color);
+// }

@@ -1,8 +1,11 @@
 
 public class Fill : Statement
 {
-    public Fill(CodeLocation location) : base(location)
-    { }
+    Canvas Canvas;
+    public Fill(CodeLocation location, Canvas canvas) : base(location)
+    {
+        Canvas = canvas;
+    }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
         bool isValid = true;
@@ -19,11 +22,11 @@ public class Fill : Statement
         }
         return isValid;
     }
-    public override void Execute(ExecutionContext context)
+    public override void Execute()
     {
-        int startX = context.Canvas.Walle.ActualX;
-        int startY = context.Canvas.Walle.ActualY;
-        string targetColor = context.Canvas.GetPixel(startX, startY);
-        context.Canvas.FillSpace(startX, startY, targetColor);
+        int startX = Canvas.Walle.ActualX;
+        int startY = Canvas.Walle.ActualY;
+        string targetColor = Canvas.GetPixel(startX, startY);
+        Canvas.FillSpace(startX, startY, targetColor);
     }
 }

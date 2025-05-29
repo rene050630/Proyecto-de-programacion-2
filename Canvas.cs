@@ -10,8 +10,7 @@ public class Canvas
     public string BoardColor;
     public int BrushSize = 1;
     public int Size;
-    public Walle WalleX;
-    public Walle WalleY;
+    public bool IsSpawnCalled = false;
     public Walle Walle;
     public Canvas(int size)
     {
@@ -25,14 +24,49 @@ public class Canvas
             for (int j = 0; j < Size; j++)
                 board[i, j] = "White";
     }
+    public void IsCanvasColor(string color, int vertical, int horizontal)
+    {
+        if (IsPositionValid(Walle.ActualX + horizontal, Walle.ActualY + vertical))
+        {
+            if (GetPixel(Walle.ActualX + horizontal, Walle.ActualY + vertical) == color) System.Console.WriteLine(1);
+            System.Console.WriteLine(0);
+        }
+        else IsCanvasColor();
+    }
+    public bool IsCanvasColor()
+    {
+        return false;
+    }
+    public int IsBrushSize(int size)
+    {
+        if (BrushSize == size) return 1;
+        else return 0;
+    }
+    public int IsBrushColor(string color)
+    {
+        if (BrushColor == color) return 1;
+        else return 0;
+    }
+    public int GetCanvasSize()
+    {
+        return Size;
+    }
+    public int GetActualX()
+    {
+        return Walle.ActualX;
+    }
+    public int GetActualY()
+    {
+        return Walle.ActualX;
+    }
     public string GetPixel(int x, int y) => board[x, y];
     public void Spawn(int x, int y)
     {
         // Lógica para posicionar a Wall-E
         if (IsPositionValid(x, y))
         {
-            WalleX.ActualX = x;
-            WalleY.ActualY = y;
+            Walle.ActualX = x;
+            Walle.ActualY = y;
         }
     }
 
@@ -43,19 +77,19 @@ public class Canvas
         for (int step = 0; step < distance; step++)
         {
             // Calcular nueva posición
-            int newX = WalleX.ActualX + dirX;
-            int newY = WalleY.ActualY + dirY;
+            int newX = Walle.ActualX + dirX;
+            int newY = Walle.ActualY + dirY;
 
             // Detener si se sale del canvas
             if (!IsPositionValid(newX, newY)) break;
 
-            WalleX.ActualX = newX;
-            WalleY.ActualY = newY;
+            Walle.ActualX = newX;
+            Walle.ActualY = newY;
 
             // Pintar área del pincel
             for (int dx = -radius; dx <= radius; dx++)
                 for (int dy = -radius; dy <= radius; dy++)
-                    SetPixel(WalleX.ActualX + dx, WalleY.ActualY + dy);
+                    SetPixel(Walle.ActualX + dx, Walle.ActualY + dy);
         }
     }
 
@@ -141,6 +175,21 @@ public class Canvas
     public bool IsWithinCanvas(int x, int y, int canvasSize)
     {
         return x >= 0 && x < canvasSize && y >= 0 && y < canvasSize;
+    }
+    public int GetColorCount(int x1, int x2, int y1, int y2, string color)
+    {
+        int count = 0;
+        if (x1 > Size || y1 > Size || x2 > Size || y2 > Size) return 0;
+        if (x1 < x2) (x1, x2) = (x2, x1);
+        if (y1 > y2) (y1, y2) = (y2, y1);
+        for (int i = x1; i <= x2; i++)
+        {
+            for (int j = y1; j <= y2; j++)
+            {
+                if (GetPixel(i, j) == color) count++;
+            }
+        }
+        return count;
     }
     public void FillSpace(int startX, int startY, string targetColor)
     {

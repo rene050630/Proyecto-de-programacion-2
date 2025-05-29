@@ -2,9 +2,11 @@
 public class Size : Statement
 {
     Expression size;
-    public Size(CodeLocation location, Expression size) : base(location)
+    Canvas Canvas;
+    public Size(CodeLocation location, Expression size, Canvas canvas) : base(location)
     {
         this.size = size;
+        Canvas = canvas;
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
@@ -30,12 +32,12 @@ public class Size : Statement
         }
         return isValid;
     }
-    public override void Execute(ExecutionContext context)
+    public override void Execute()
     {
         int size = (int)Math.Floor((double)this.size.Value);
         // Ajustar a tamaño válido
         size = Math.Max(1, size);       // Mínimo 1
         size = size % 2 == 0 ? size - 1 : size; // Convertir a impar
-        context.BrushSize = size;
+        Canvas.BrushSize = size;
     }
 }

@@ -1,7 +1,7 @@
 
 public abstract class Expression : AST
 {
-    public abstract void Evaluate(ExecutionContext context);
+    public abstract void Evaluate();
 
     public abstract ExpressionType Type { get; set; }
 

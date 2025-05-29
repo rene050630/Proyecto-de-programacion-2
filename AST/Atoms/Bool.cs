@@ -14,7 +14,7 @@ class Bool: AtomsExpression
     {
         return true;
     }
-    public override void Evaluate(ExecutionContext context)
+    public override void Evaluate()
     {
         
     }

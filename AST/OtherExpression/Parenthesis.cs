@@ -14,9 +14,9 @@ public class ParenthesizedExpression : Expression
         return InnerExpression.checksemantic(context, errors);
     }
 
-    public override void Evaluate(ExecutionContext context)
+    public override void Evaluate()
     {
-        InnerExpression.Evaluate(context);
+        InnerExpression.Evaluate();
         Value = InnerExpression.Value;
     }
     public override ExpressionType Type { get; set; }

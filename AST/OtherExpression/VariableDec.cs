@@ -8,7 +8,7 @@ public class Variable : Expression
     {
         this.variable = variable;
     }
-    public override void Evaluate(ExecutionContext context)
+    public override void Evaluate()
     {
         Value = scope.GetValue(variable);
     }

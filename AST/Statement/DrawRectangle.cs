@@ -6,14 +6,16 @@ public class DrawRectangle : Statement
     Expression width;
     Expression height;
     Expression distance;
+    Canvas Canvas;
 
-    public DrawRectangle(CodeLocation location, Expression dirX, Expression dirY, Expression width, Expression height, Expression distance) : base(location)
+    public DrawRectangle(CodeLocation location, Expression dirX, Expression dirY, Expression width, Expression height, Expression distance, Canvas canvas) : base(location)
     {
         this.dirX = dirX;
         this.dirY = dirY;
         this.width = width;
         this.height = height;
         this.distance = distance;
+        Canvas = canvas;
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
@@ -71,38 +73,38 @@ public class DrawRectangle : Statement
         }
         if ((int)dirX.Value < -1 || (int)dirX.Value > 1)
         {
-            errors.Add(new CompilingError(location, ErrorCode.Invalid, $"Direction X invalid: {(int)dirX.Value}. Allowed values: -1, 0, 1"));
+            errors.Add(new CompilingError(dirX.location, ErrorCode.Invalid, $"Direction X invalid: {(int)dirX.Value}. Allowed values: -1, 0, 1"));
             isValid = false;
         }
         if ((int)dirY.Value < -1 || (int)dirY.Value > 1)
         {
-            errors.Add(new CompilingError(location, ErrorCode.Invalid, $"Direction Y invalid: {(int)dirY.Value}. Allowed values: -1, 0, 1"));
+            errors.Add(new CompilingError(dirY.location, ErrorCode.Invalid, $"Direction Y invalid: {(int)dirY.Value}. Allowed values: -1, 0, 1"));
             isValid = false;
         }
         if ((int)distance.Value < 1)
         {
-            errors.Add(new CompilingError(location, ErrorCode.Invalid, $"Invalid distance: {(int)distance.Value}. It requires to be ≥ 1"));
+            errors.Add(new CompilingError(distance.location, ErrorCode.Invalid, $"Invalid distance: {(int)distance.Value}. It requires to be ≥ 1"));
             isValid = false;
         }
         if ((int)width.Value < 1)
         {
-            errors.Add(new CompilingError(location, ErrorCode.Invalid, $"Invalid width: {(int)width.Value}. It requires to be ≥ 1"));
+            errors.Add(new CompilingError(width.location, ErrorCode.Invalid, $"Invalid width: {(int)width.Value}. It requires to be ≥ 1"));
             isValid = false;
         }
         if ((int)height.Value < 1)
         {
-            errors.Add(new CompilingError(location, ErrorCode.Invalid, $"Invalid height: {(int)height.Value}. It requires to be ≥ 1"));
+            errors.Add(new CompilingError(height.location, ErrorCode.Invalid, $"Invalid height: {(int)height.Value}. It requires to be ≥ 1"));
             isValid = false;
         }
         return isValid;
     }
-    public override void Execute(ExecutionContext context)
+    public override void Execute()
     {
-        int centerX = context.Canvas.Walle.ActualX + (int)dirX.Value * (int)distance.Value;
-        int centerY = context.Canvas.Walle.ActualY + (int)dirY.Value * (int)distance.Value;
+        int centerX = Canvas.Walle.ActualX + (int)dirX.Value * (int)distance.Value;
+        int centerY = Canvas.Walle.ActualY + (int)dirY.Value * (int)distance.Value;
         // Dibujar rectángulo
-        context.Canvas.DrawRectangleOutline(centerX, centerY, (int)width.Value, (int)height.Value);
+        Canvas.DrawRectangleOutline(centerX, centerY, (int)width.Value, (int)height.Value);
         // Actualizar posición de Wall-E
-        context.Canvas.Walle.MoveTo(centerX, centerY);
+        Canvas.Walle.MoveTo(centerX, centerY);
     }
 }

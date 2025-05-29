@@ -3,10 +3,10 @@ public class Or : BinaryExpression
     public override ExpressionType Type{get;set;}
     public override object? Value{get;set;}
     public Or(CodeLocation location) : base(location) {}
-    public override void Evaluate(ExecutionContext context)
+    public override void Evaluate()
     {
-        Right.Evaluate(context);
-        Left.Evaluate(context);
+        Right.Evaluate();
+        Left.Evaluate();
         
         this.Value = (bool)this.Left.Value || (bool)this.Right.Value;
     }

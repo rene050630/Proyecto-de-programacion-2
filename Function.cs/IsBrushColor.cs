@@ -1,38 +1,35 @@
 
-using System.Linq.Expressions;
-
-public class Color : Statement
+public class IsBrushColor : Expression
 {
+    public override ExpressionType Type { get; set; } = ExpressionType.Function;
+    public override object? Value { get; set; }
     Expression color;
     Canvas Canvas;
-    public Color(CodeLocation location, Expression color, Canvas canvas) : base(location)
+    public IsBrushColor(CodeLocation location, Expression color, Canvas canvas) : base(location)
     {
+        Canvas = canvas;
         this.color = color;
-        Canvas = canvas; 
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
-        bool isValid = true;
+        bool isValid = false;
         if (!color.checksemantic(context, errors) || color.Type != ExpressionType.Text)
         {
-            errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "Colors requieres to be strings"));
+            errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "color requires to be a string"));
             isValid = false;
         }
         if (color.Value is string stringLiteral &&
             !context.IsValidColor(stringLiteral))
         {
-            errors.Add(new CompilingError(
-                color.location,
-                ErrorCode.Invalid,
+            errors.Add(new CompilingError(color.location, ErrorCode.Invalid,
                 $"Color '{stringLiteral}' is invalid. Allowed colors: {string.Join(", ", context.ValidColors)}"
             ));
             isValid = false;
         }
         return isValid;
     }
-    public override void Execute()
+    public override void Evaluate()
     {
-        // Actualizar el color del pincel
-        Canvas.BrushColor = (string)color.Value;
+        Canvas.IsBrushColor((string)color.Value);
     }
 }
