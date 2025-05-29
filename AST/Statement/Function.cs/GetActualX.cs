@@ -1,9 +1,7 @@
 
-public class GetActualX : Expression
+public class GetActualX : Statement
 {
     Canvas Canvas;
-    public override ExpressionType Type { get; set; } = ExpressionType.Function;
-    public override object? Value { get; set; }
     public GetActualX(CodeLocation location, Canvas canvas) : base(location)
     {
         Canvas = canvas;
@@ -12,7 +10,7 @@ public class GetActualX : Expression
     {
         return true;
     }
-    public override void Evaluate()
+    public override void Execute()
     {
         Canvas.GetActualX();
     }

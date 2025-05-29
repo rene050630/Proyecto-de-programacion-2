@@ -1,9 +1,7 @@
 
-public class Label : Expression
+public class Label : Statement
 {
     public string Name;
-    public override ExpressionType Type { get; set; }
-    public override object? Value { get; set; }
     public Label(CodeLocation location, string name) : base(location)
     {
         Name = name;
@@ -12,7 +10,7 @@ public class Label : Expression
     {
         return true;
     }
-    public override void Evaluate()
+    public override void Execute()
     {
 
     }

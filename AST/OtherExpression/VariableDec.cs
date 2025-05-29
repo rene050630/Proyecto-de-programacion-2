@@ -1,30 +1,60 @@
-public class Variable : Expression
+public class Variable : Statement
 {
-    public string variable;
-    public override object? Value { get; set; }
-    public override ExpressionType Type { get; set; }
-    private Scope scope { get; set; }
-    public Variable(string variable, CodeLocation location) : base(location)
+    public string Name { get; }
+    public Expression Expression { get; }
+
+    public Variable(string Name, Expression expression, CodeLocation location)
+        : base(location)
     {
-        this.variable = variable;
+        this.Name = Name;
+        Expression = expression;
     }
-    public override void Evaluate()
-    {
-        Value = scope.GetValue(variable);
-    }
+
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
-        this.scope = scope;
-        if (scope.GetType(variable) == ExpressionType.ErrorType)
+        // 1. Validar nombre de variable
+        if (!IsIdentifier(Name))
         {
-            Type = ExpressionType.ErrorType;
-            errors.Add(new CompilingError(location, ErrorCode.Invalid, "variable undefined"));
+            errors.Add(new CompilingError(
+                location,
+                ErrorCode.Invalid,
+                $"Variable name is invalid"
+            ));
             return false;
         }
-        else
+
+        // 2. Validar expresión
+        bool ValidExpression = Expression.checksemantic(context, errors);
+        
+        return ValidExpression;
+    }
+
+    public override void Execute()
+    {
+        // Evaluar la expresión
+        Expression.Evaluate();
+    }
+
+    private bool IsIdentifier(string nombre)
+    {
+        // Implementar reglas del lenguaje:
+        // - No puede comenzar con número o _
+        // - Solo letras, números y _
+        if (string.IsNullOrEmpty(nombre)) return false;
+        if (char.IsDigit(nombre[0])) return false;
+        if (nombre[0] == '_') return false;
+        
+        foreach (char c in nombre)
         {
-            scope.GetType(variable);
-            return true;
+            if (!char.IsLetterOrDigit(c) && c != '_')
+                return false;
         }
+        
+        return true;
+    }
+
+    public override string ToString()
+    {
+        return $"{Name} <- {Expression}";
     }
 }

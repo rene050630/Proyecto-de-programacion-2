@@ -1,8 +1,6 @@
 
-public class IsCanvasColor : Expression
+public class IsCanvasColor : Statement
 {
-    public override ExpressionType Type { get; set; } = ExpressionType.Function;
-    public override object? Value { get; set; }
     Expression color;
     Expression horizontal;
     Expression vertical;
@@ -42,7 +40,7 @@ public class IsCanvasColor : Expression
         }
         return isValid;
     }
-    public override void Evaluate()
+    public override void Execute()
     {
         Canvas.IsCanvasColor((string)color.Value, (int)vertical.Value, (int)horizontal.Value);
     }

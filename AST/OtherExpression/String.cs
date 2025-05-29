@@ -1,9 +1,9 @@
-public class String : Expression
+public class Text : Expression
 {
     public override object? Value { get; set; }
     public override ExpressionType Type{get;set;}
     public string Substring;
-    public String(string value, CodeLocation location) : base(location)
+    public Text(string value, CodeLocation location) : base(location)
     {
         Value = value;
     }

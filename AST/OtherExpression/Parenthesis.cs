@@ -19,6 +19,14 @@ public class ParenthesizedExpression : Expression
         InnerExpression.Evaluate();
         Value = InnerExpression.Value;
     }
+    public override string ToString()
+    {
+        if (Value == null)
+        {
+            return string.Format("({0})", InnerExpression);
+        }
+        return Value.ToString();
+    }
     public override ExpressionType Type { get; set; }
     public override object? Value { get; set; }
 }

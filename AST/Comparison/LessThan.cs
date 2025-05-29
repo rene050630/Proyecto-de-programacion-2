@@ -2,7 +2,11 @@ public class LessT : BinaryExpression
 {
     public override ExpressionType Type { get; set; }
     public override object? Value { get; set; }
-    public LessT(CodeLocation location) : base(location){}
+    public LessT(CodeLocation location, Expression left, Expression right) : base(location)
+    {
+        Left = left;
+        Right = right;
+    }
     public override void Evaluate()
     {
         Right.Evaluate();

@@ -1,34 +1,29 @@
-
- //Posible implementacion de una interfaz IExecution con un metodo void Execute para las funciones
-public class GoTo : AST
+public class GoTo : Statement
 {
-    public string Label { get; }
+    public Label Label { get; }
     public Expression Condition { get; }
-    public GoTo(CodeLocation location, string label, Expression condition) : base(location)
+    private Context context;
+    public GoTo(CodeLocation location, Label label, Expression condition) : base(location)
     {
         Label = label;
         Condition = condition;
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
-        if (!context.LabelExists(Label))
+        if (!context.LabelExists(Label.Name))
         {
-            errors.Add(new CompilingError(location,
-                ErrorCode.UndefinedLabel,
-                $"Label '{Label}' undefined"));
+            errors.Add(new CompilingError(location, ErrorCode.UndefinedLabel, $"Label '{Label}' undefined"));
             return false;
         }
         if (!Condition.checksemantic(context, errors) ||
             Condition.Type != ExpressionType.Boolean)
         {
-            errors.Add(new CompilingError(location,
-                ErrorCode.Invalid,
-                "Condition requires to be booelan"));
+            errors.Add(new CompilingError(location, ErrorCode.Invalid, "Condition requires to be booelan"));
             return false;
         }
         return true;
     }
-    public void Execution(Context context)
+    public override void Execute()
     {
         // Evaluar la condición
         Condition.Evaluate();
@@ -36,7 +31,7 @@ public class GoTo : AST
         if (Condition.Value is bool shouldJump && shouldJump)
         {
             // Saltar a la posición de la etiqueta
-            context.JumpToLabel(Label);
+            context.JumpToLabel(Label.Name);
         }
 
     }

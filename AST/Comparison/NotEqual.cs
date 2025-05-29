@@ -2,8 +2,10 @@ public class NotEqual : BinaryExpression
 {
     public override ExpressionType Type{get;set;}
     public override object? Value{get; set;}
-    public NotEqual(CodeLocation location) : base(location)
+    public NotEqual(CodeLocation location, Expression left, Expression right) : base(location)
     {
+        Left = left;
+        Right = right;
     }
     public override void Evaluate()
     {

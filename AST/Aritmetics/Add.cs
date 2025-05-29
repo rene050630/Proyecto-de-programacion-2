@@ -2,8 +2,10 @@ public class Add : BinaryExpression
 {
     public override ExpressionType Type { get; set; }
     public override object? Value { get; set; }
-    public Add(CodeLocation location) : base(location)
+    public Add(CodeLocation location, Expression left, Expression right) : base(location)
     {
+        Left = left;
+        Right = right;
     }
     public override void Evaluate()
     {

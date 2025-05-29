@@ -1,4 +1,4 @@
-public class CompilingError
+public class CompilingError : Exception
 {
     public ErrorCode Code { get; private set; }
 

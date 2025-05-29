@@ -1,8 +1,6 @@
 
-public class IsBrushColor : Expression
+public class IsBrushColor : Statement
 {
-    public override ExpressionType Type { get; set; } = ExpressionType.Function;
-    public override object? Value { get; set; }
     Expression color;
     Canvas Canvas;
     public IsBrushColor(CodeLocation location, Expression color, Canvas canvas) : base(location)
@@ -28,7 +26,7 @@ public class IsBrushColor : Expression
         }
         return isValid;
     }
-    public override void Evaluate()
+    public override void Execute()
     {
         Canvas.IsBrushColor((string)color.Value);
     }

@@ -43,6 +43,8 @@ public class TokenValues
     public const string ValueSeparator = "ValueSeparator"; // _ 
     public const string StatementSeparator = "StatementSeparator"; // \n
 
+    public const string False = "false";
+    public const string True = "true";
     public const string OpenBracket = "OpenBracket"; // ( 
     public const string ClosedBracket = "ClosedBracket"; // )
     // public const string OpenQM = "quotation marks"; // "

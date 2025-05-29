@@ -5,7 +5,11 @@ public class Pow : BinaryExpression
 {
     public override ExpressionType Type { get; set; }
     public override object? Value { get; set; }
-    public Pow(CodeLocation location) : base(location) { }
+    public Pow(CodeLocation location, Expression left, Expression right) : base(location)
+    {
+        Left = left;
+        Right = right;
+    }
     public override void Evaluate()
     {
         Right.Evaluate();

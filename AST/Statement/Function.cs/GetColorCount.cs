@@ -1,8 +1,6 @@
 
-public class GetColorCount : Expression
+public class GetColorCount : Statement
 {
-    public override ExpressionType Type { get; set; } = ExpressionType.Function;
-    public override object? Value { get; set; }
     Canvas Canvas;
     Expression color;
     Expression x1;
@@ -77,7 +75,7 @@ public class GetColorCount : Expression
         }
         return isValid;
     }
-    public override void Evaluate()
+    public override void Execute()
     {
         Canvas.GetColorCount((int)x1.Value, (int)x2.Value, (int)y1.Value, (int)y2.Value, (string)color.Value);
     }

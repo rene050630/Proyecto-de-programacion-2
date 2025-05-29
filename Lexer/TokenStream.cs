@@ -12,7 +12,45 @@ public class TokenStream : IEnumerable<Token>
     }
 
     public bool End => position == tokens.Count - 1;
-
+    public bool Match(params string[] values)
+    {
+        foreach(var token in values)
+        {
+            if(Check(token))
+            {
+                Advance();
+                return true;
+            }
+        }
+        return false; 
+    }
+    //veo si el token tiene el tipo que le digo
+    public bool Match(TokenType type)
+    {
+        if(CheckType(type))
+        {
+            Advance();
+            return true;
+        }
+        return false; 
+    }
+    public bool CheckType(TokenType type)
+    {
+        return Peek().tokenType == type;
+    }
+    public Token Advance()
+    {
+        if (!End) position++;
+        return Previous();
+    }
+    public Token Peek()
+    {
+        return tokens[position];
+    }
+    public bool Check(string value)
+    {
+        return Peek().value == value;
+    }
     public void MoveNext(int k)
     {
         position += k;
@@ -50,6 +88,15 @@ public class TokenStream : IEnumerable<Token>
         }
 
         return false;
+    }
+    public Token Consume(string value, string message) 
+    {
+        if (Check(value)) return Advance();
+        throw new CompilingError(Peek().codeLocation, ErrorCode.Expected, message);
+    }
+    public Token Previous()
+    {
+        return tokens[position - 1];
     }
 
     public bool CanLookAhead(int k = 0)

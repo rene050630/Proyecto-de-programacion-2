@@ -2,8 +2,10 @@ public class Equal : BinaryExpression
 {
     public override ExpressionType Type{get;set;}
     public override object? Value{get; set;}
-    public Equal(CodeLocation location) : base(location)
+    public Equal(CodeLocation location, Expression left, Expression right) : base(location)
     {
+        Left = left;
+        Right = right;
     }
     public override void Evaluate()
     {

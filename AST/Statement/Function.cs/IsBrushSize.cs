@@ -1,10 +1,8 @@
 using System.Linq.Expressions;
 
-public class IsBrushSize : Expression
+public class IsBrushSize : Statement
 {
     Expression size;
-    public override ExpressionType Type { get; set; } = ExpressionType.Function;
-    public override object? Value { get; set; }
     Canvas Canvas;
     public IsBrushSize(CodeLocation location, Expression size, Canvas canvas) : base(location)
     {
@@ -21,7 +19,7 @@ public class IsBrushSize : Expression
         }
         return isValid;
     }
-    public override void Evaluate()
+    public override void Execute()
     {
         Canvas.IsBrushSize((int)size.Value);
     }

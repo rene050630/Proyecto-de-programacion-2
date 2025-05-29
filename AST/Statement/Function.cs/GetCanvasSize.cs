@@ -1,8 +1,6 @@
-public class GetCanvasSize : Expression
+public class GetCanvasSize : Statement
 {
     Canvas Canvas;
-    public override ExpressionType Type { get; set; } = ExpressionType.Function;
-    public override object? Value { get; set; }
     public GetCanvasSize(CodeLocation location, Canvas canvas) : base(location)
     {
         Canvas = canvas;
@@ -11,7 +9,7 @@ public class GetCanvasSize : Expression
     {
         return true;
     }
-    public override void Evaluate()
+    public override void Execute()
     {
         Canvas.GetCanvasSize();
     }

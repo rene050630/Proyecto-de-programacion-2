@@ -2,8 +2,10 @@ public class Mult : BinaryExpression
 {
      public override ExpressionType Type { get; set; }
     public override object? Value { get; set; }
-    public Mult(CodeLocation location) : base(location)
+    public Mult(CodeLocation location, Expression left, Expression right) : base(location)
     {
+        Left = left;
+        Right = right;
     }
     public override void Evaluate()
     {
