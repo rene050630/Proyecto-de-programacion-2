@@ -6,10 +6,12 @@ public class Parser
     private List<Token> tokens;
     private List<CompilingError> errors;
     private TokenStream stream;
+    private Context context;
     Canvas Canvas;
-    public Parser(List<Token> tokens)
+    public Parser(List<Token> tokens, TokenStream stream)
     {
         this.tokens = tokens;
+        this.stream = stream;
     }
     #region Expression
     private Expression expression()
@@ -161,14 +163,32 @@ public class Parser
 
         throw new CompilingError(stream.Peek().codeLocation, ErrorCode.Expected, "An expression was expected");
     }
-    private Expression ProcessMemberAccess(Expression expression)
-    {
-        // En este lenguaje simple no hay acceso a miembros
-        throw new CompilingError(stream.Peek().codeLocation, ErrorCode.Expected, "Member access is not available in this languaje");
-    }
     #endregion
     #region Statement
-
+    public Context ParseProgram()
+{
+    List<Statement> statements = new List<Statement>();
+    
+    while (!stream.End)
+    {
+        statements.Add(ParseStatement());
+        
+        // Forzar salto de línea después de cada sentencia
+        if (!stream.Match(TokenValues.StatementSeparator) && !stream.End)
+        {
+            throw new CompilingError(
+                stream.LookAhead().codeLocation,
+                ErrorCode.Expected,
+                "A \n was expected"
+            );
+        }
+        
+        // Consumir múltiples saltos de línea
+        while (stream.Match(TokenValues.StatementSeparator)) ;
+    }
+    
+    return new Context();
+}
     private Statement ParseStatement()
     {
         if (stream.Match(TokenValues.Spawn))
@@ -212,7 +232,7 @@ public class Parser
     {
         var location = stream.LookAhead().codeLocation;
         var identifierToken = stream.Consume(TokenValues.Identifier, "Identifier expected");
-
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new Label(location, identifierToken.value);
     }
 
@@ -220,6 +240,9 @@ public class Parser
     {
         var location = stream.LookAhead().codeLocation;
         stream.Consume(TokenValues.Fill, "A Fill was expected");
+        stream.Consume(TokenValues.OpenBracket, "A ( was expected"); // '('
+        stream.Consume(TokenValues.ClosedBracket, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new Fill(location, Canvas);
     }
 
@@ -227,13 +250,14 @@ public class Parser
     {
         var location = stream.LookAhead().codeLocation;
         stream.Consume(TokenValues.Spawn, "A Spawn was expected");
-        stream.Consume(TokenValues.OpenBracket, "An ( was expected"); // '('
+        stream.Consume(TokenValues.OpenBracket, "A ( was expected"); // '('
 
         var x = expression();
         stream.Consume(TokenValues.Comma, "A , was expected"); // ','
         var y = expression();
 
         stream.Consume(TokenValues.ClosedBracket, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
 
         return new Spawn(location, x, y, Canvas);
     }
@@ -246,6 +270,7 @@ public class Parser
         var x = expression();
 
         stream.Consume(TokenValues.ClosedBracket, "A ) was expected");
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new Color(location, x, Canvas);
     }
     private Size ParseSize()
@@ -257,6 +282,7 @@ public class Parser
         var x = expression();
 
         stream.Consume(TokenValues.Comma, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new Size(location, x, Canvas);
     }
     private DrawLine ParseDrawLine()
@@ -272,6 +298,7 @@ public class Parser
         var z = expression();
 
         stream.Consume(TokenValues.Comma, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new DrawLine(location, x, y, z, Canvas);
     }
     private DrawCircle ParseDrawCircle()
@@ -287,6 +314,7 @@ public class Parser
         var z = expression();
 
         stream.Consume(TokenValues.Comma, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new DrawCircle(location, x, y, z, Canvas);
     }
     private DrawRectangle ParseDrawRectangle()
@@ -306,9 +334,10 @@ public class Parser
         var b = expression();
 
         stream.Consume(TokenValues.Comma, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new DrawRectangle(location, a, b, x, y, z, Canvas);
     }
-    private Variable ParseVariable()
+    private VariableDec ParseVariable()
     {
 
         var location = stream.LookAhead().codeLocation;
@@ -318,8 +347,8 @@ public class Parser
         stream.Consume(TokenValues.Assign, "A <- was expected"); // "<-"
 
         var exp = expression();
-
-        return new Variable(identifierToken.value, exp, location);
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
+        return new VariableDec(identifierToken.value, exp, location);
 
     }
     private GoTo ParseGoto()
@@ -336,7 +365,8 @@ public class Parser
         var expr = expression();
 
         stream.Consume(TokenValues.ClosedBracket, "A ) was expected"); // ')'
-        return new GoTo(location, label, expr);
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
+        return new GoTo(location, label, expr, context);
     }
     private IsCanvasColor ParseIsCanvasColor()
     {
@@ -351,6 +381,7 @@ public class Parser
         var z = expression();
 
         stream.Consume(TokenValues.Comma, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new IsCanvasColor(location, x, y, z, Canvas);
     }
 
@@ -363,6 +394,7 @@ public class Parser
         var x = expression();
 
         stream.Consume(TokenValues.Comma, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new IsBrushSize(location, x, Canvas);   
     }
 
@@ -375,6 +407,7 @@ public class Parser
         var x = expression();
 
         stream.Consume(TokenValues.Comma, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new IsBrushColor(location, x, Canvas); 
     }
 
@@ -395,6 +428,7 @@ public class Parser
         var b = expression();
 
         stream.Consume(TokenValues.Comma, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new GetColorCount(location, Canvas, b, x, y, z, a);
     }
 
@@ -404,6 +438,7 @@ public class Parser
         stream.Consume(TokenValues.GetCanvasSize, "A GetCanvasSize was expected");
         stream.Consume(TokenValues.OpenBracket, "A ( was expected"); // '('
         stream.Consume(TokenValues.ClosedBracket, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new GetCanvasSize(location, Canvas);
     }
 
@@ -413,6 +448,7 @@ public class Parser
         stream.Consume(TokenValues.GetActualY, "A GetActualY was expected");
         stream.Consume(TokenValues.OpenBracket, "A ( was expected"); // '('
         stream.Consume(TokenValues.ClosedBracket, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new GetActualY(location, Canvas);
     }
 
@@ -422,6 +458,7 @@ public class Parser
         stream.Consume(TokenValues.GetActualX, "A GetActualX was expected");
         stream.Consume(TokenValues.OpenBracket, "A ( was expected"); // '('
         stream.Consume(TokenValues.ClosedBracket, "A ) was expected"); // ')'
+        stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
         return new GetActualX(location, Canvas);
     }
     #endregion

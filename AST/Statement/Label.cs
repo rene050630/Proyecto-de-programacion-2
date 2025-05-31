@@ -8,6 +8,15 @@ public class Label : Statement
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
+        if (!IsIdentifier(Name))
+        {
+            errors.Add(new CompilingError(
+                location,
+                ErrorCode.Invalid,
+                $"Label name is invalid"
+            ));
+            return false;
+        }
         return true;
     }
     public override void Execute()
@@ -17,5 +26,22 @@ public class Label : Statement
     public override string ToString()
     {
         return $"{Name}:";
+    }
+    private bool IsIdentifier(string nombre)
+    {
+        // Implementar reglas del lenguaje:
+        // - No puede comenzar con número o _
+        // - Solo letras, números y _
+        if (string.IsNullOrEmpty(nombre)) return false;
+        if (char.IsDigit(nombre[0])) return false;
+        if (nombre[0] == '_') return false;
+
+        foreach (char c in nombre)
+        {
+            if (!char.IsLetterOrDigit(c) && c != '_')
+                return false;
+        }
+
+        return true;
     }
 }

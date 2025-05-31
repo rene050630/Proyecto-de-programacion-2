@@ -1,5 +1,4 @@
 public enum TokenType {
-    Unknwon,
     Number,
     Text,
     Keyword,

@@ -14,7 +14,7 @@ public class CompilingError : Exception
     }
     public override string ToString()
     {
-        return Argument + " Error Type:" + Code + " in position" + Location.Line;
+        return Argument + " Error Type:" + Code + " in line " + Location.Line;
     }
 
     }

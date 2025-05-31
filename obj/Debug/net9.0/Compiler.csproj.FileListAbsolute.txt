@@ -3,3 +3,13 @@ D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\
 D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\Compiler.AssemblyInfo.cs
 D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\Compiler.csproj.CoreCompileInputs.cache
 D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\Compiler.sourcelink.json
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\bin\Debug\net9.0\Compiler.exe
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\bin\Debug\net9.0\Compiler.deps.json
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\bin\Debug\net9.0\Compiler.runtimeconfig.json
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\bin\Debug\net9.0\Compiler.dll
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\bin\Debug\net9.0\Compiler.pdb
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\Compiler.dll
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\refint\Compiler.dll
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\Compiler.pdb
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\Compiler.genruntimeconfig.cache
+D:\Walle\WalleVs\WindowsFormsApp1\Compiler\Proyecto-de-programacion-2\obj\Debug\net9.0\ref\Compiler.dll

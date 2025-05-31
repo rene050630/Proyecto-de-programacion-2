@@ -1,15 +1,19 @@
-public class Variable : Statement
+public class VariableDec : Statement
 {
     public string Name { get; }
     public Expression Expression { get; }
 
-    public Variable(string Name, Expression expression, CodeLocation location)
+    public VariableDec(string Name, Expression expression, CodeLocation location)
         : base(location)
     {
         this.Name = Name;
         Expression = expression;
     }
-
+    public override void Execute()
+    {
+        // Evaluar la expresión
+        Expression.Evaluate();
+    }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
         // 1. Validar nombre de variable
@@ -22,17 +26,13 @@ public class Variable : Statement
             ));
             return false;
         }
-
         // 2. Validar expresión
         bool ValidExpression = Expression.checksemantic(context, errors);
-        
+        if (ValidExpression)
+        {
+            context.SetValue(Expression.ToString(), Expression.Value);
+        }
         return ValidExpression;
-    }
-
-    public override void Execute()
-    {
-        // Evaluar la expresión
-        Expression.Evaluate();
     }
 
     private bool IsIdentifier(string nombre)

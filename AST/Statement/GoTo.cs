@@ -2,11 +2,12 @@ public class GoTo : Statement
 {
     public Label Label { get; }
     public Expression Condition { get; }
-    private Context context;
-    public GoTo(CodeLocation location, Label label, Expression condition) : base(location)
+    private Context Context;
+    public GoTo(CodeLocation location, Label label, Expression condition, Context context) : base(location)
     {
         Label = label;
         Condition = condition;
+        Context = context;
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
@@ -31,7 +32,7 @@ public class GoTo : Statement
         if (Condition.Value is bool shouldJump && shouldJump)
         {
             // Saltar a la posición de la etiqueta
-            context.JumpToLabel(Label.Name);
+            Context.JumpToLabel(Label.Name);
         }
 
     }
