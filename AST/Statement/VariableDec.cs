@@ -1,23 +1,32 @@
 public class VariableDec : Statement
 {
-    public string Name { get; }
-    public Expression Expression { get; }
-
-    public VariableDec(string Name, Expression expression, CodeLocation location)
+    public Expression Name { get; }
+    public Expression value { get; set; }
+    Token Operator;
+    Context context;
+    public VariableDec(Expression Name, Expression value, Token op, CodeLocation location)
         : base(location)
     {
         this.Name = Name;
-        Expression = expression;
+        this.value = value;
+        Operator = op;
     }
     public override void Execute()
     {
-        // Evaluar la expresión
-        Expression.Evaluate();
+        if (Name is Variable)
+        {
+            if (Operator.value == TokenValues.Assign)
+            {
+                context.SetValue(Name.ToString(), value.Value);
+                return;
+            }
+        }
+        
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
         // 1. Validar nombre de variable
-        if (!IsIdentifier(Name))
+        if (!IsIdentifier(Name.ToString()))
         {
             errors.Add(new CompilingError(
                 location,
@@ -27,11 +36,8 @@ public class VariableDec : Statement
             return false;
         }
         // 2. Validar expresión
-        bool ValidExpression = Expression.checksemantic(context, errors);
-        if (ValidExpression)
-        {
-            context.SetValue(Expression.ToString(), Expression.Value);
-        }
+        bool ValidExpression = Name.checksemantic(context, errors);
+    
         return ValidExpression;
     }
 
@@ -55,6 +61,6 @@ public class VariableDec : Statement
 
     public override string ToString()
     {
-        return $"{Name} <- {Expression}";
+        return $"{Name} <- {value}";
     }
 }

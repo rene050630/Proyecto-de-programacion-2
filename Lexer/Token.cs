@@ -21,7 +21,7 @@ public class Token
         return $"{tokenType}: {value} (Line: {codeLocation.Line}, Column: {codeLocation.Column})";
     }
 }
-public class CodeLocation
+public struct CodeLocation
 {
     public string? File;
     public int Line;

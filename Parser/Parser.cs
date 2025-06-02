@@ -13,8 +13,9 @@ public class Parser
         this.tokens = tokens;
         this.stream = stream;
     }
+     
     #region Expression
-    private Expression expression()
+    public Expression expression()
     {
         return Or();
     }
@@ -165,31 +166,32 @@ public class Parser
     }
     #endregion
     #region Statement
-    public Context ParseProgram()
-{
-    List<Statement> statements = new List<Statement>();
-    
-    while (!stream.End)
+    public ProgramNode ParseProgram()
     {
-        statements.Add(ParseStatement());
-        
-        // Forzar salto de línea después de cada sentencia
-        if (!stream.Match(TokenValues.StatementSeparator) && !stream.End)
+        List<Statement> statements = new List<Statement>();
+        Canvas = new Canvas(256);
+
+        while (!stream.End)
         {
-            throw new CompilingError(
-                stream.LookAhead().codeLocation,
-                ErrorCode.Expected,
-                "A \n was expected"
-            );
+            statements.Add(ParseStatement());
+
+            // Forzar salto de línea después de cada sentencia
+            if (!stream.Match(TokenValues.StatementSeparator) && !stream.End)
+            {
+                throw new CompilingError(
+                    stream.LookAhead().codeLocation,
+                    ErrorCode.Expected,
+                    "A \n was expected"
+                );
+            }
+
+            // Consumir múltiples saltos de línea
+            while (stream.Match(TokenValues.StatementSeparator)) ;
         }
-        
-        // Consumir múltiples saltos de línea
-        while (stream.Match(TokenValues.StatementSeparator)) ;
+
+        return new ProgramNode(new CodeLocation(), statements, Canvas);
     }
-    
-    return new Context();
-}
-    private Statement ParseStatement()
+    public Statement ParseStatement()
     {
         if (stream.Match(TokenValues.Spawn))
             return ParseSpawn();
@@ -339,16 +341,12 @@ public class Parser
     }
     private VariableDec ParseVariable()
     {
-
         var location = stream.LookAhead().codeLocation;
-
-        var identifierToken = stream.Consume(TokenValues.Identifier, "An identifier was expected");
-
-        stream.Consume(TokenValues.Assign, "A <- was expected"); // "<-"
-
+        var expr = expression();
+        Token op = stream.Previous();
         var exp = expression();
         stream.Consume(TokenValues.StatementSeparator, "A \n was expected"); // '\n'
-        return new VariableDec(identifierToken.value, exp, location);
+        return new VariableDec(expr, exp, op, location);
 
     }
     private GoTo ParseGoto()

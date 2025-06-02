@@ -3,14 +3,12 @@ using System.Text;
 public class ProgramNode : AST
 {
     public List<Statement> Statements { get; }
-    public Dictionary<string, Variable> Variables { get; }
-    public List<CompilingError> Errors { get; set; }
+    public Canvas Canvas { get; }
 
-    public ProgramNode(CodeLocation location) : base(location)
+    public ProgramNode(CodeLocation location, List<Statement> Statements, Canvas Canvas) : base(location)
     {
-        Statements = new List<Statement>();
-        Variables = new Dictionary<string, Variable>();
-        Errors = new List<CompilingError>();
+        this.Statements = Statements;
+        this.Canvas = Canvas;
     }
 
     public override bool checksemantic(Context context, List<CompilingError> errors)
