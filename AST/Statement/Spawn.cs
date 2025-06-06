@@ -2,7 +2,6 @@ public class Spawn : Statement
 {
     Expression X;
     Expression Y;
-    ExecutionContext Context;
     Canvas Canvas;
     public Spawn(CodeLocation location, Expression x, Expression y, Canvas canvas) : base(location)
     {
@@ -12,6 +11,8 @@ public class Spawn : Statement
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
+        X.Evaluate();
+        Y.Evaluate();
         bool isValid = true;
         // 1. Validar que las expresiones X e Y sean numéricas
         if (!X.checksemantic(context, errors) || X.Type != ExpressionType.Number)
@@ -27,10 +28,10 @@ public class Spawn : Statement
                 "Coordenada Y debe ser numérica"));
             isValid = false;
         }
-        if (Convert.ToInt32(X.Value) < 0 || Convert.ToInt32(X.Value) >= context.Canvas.Size || Convert.ToInt32(Y.Value) < 0 || Convert.ToInt32(Y.Value) >= context.Canvas.Size)
+        if (Convert.ToInt32(X.Value) < 0 || Convert.ToInt32(X.Value) >= Canvas.Size || Convert.ToInt32(Y.Value) < 0 || Convert.ToInt32(Y.Value) >= Canvas.Size)
         {
             errors.Add(new CompilingError(location, ErrorCode.Invalid,
-                $"Posición inválida ({X}, {Y}) para canvas de tamaño {context.Canvas.Size}"));
+                $"Posición inválida ({X}, {Y}) para canvas de tamaño {Canvas.Size}"));
             isValid = false;
         }
         // 2. Validar que Spawn no se haya llamado antes (si aplica)
@@ -44,6 +45,8 @@ public class Spawn : Statement
     }
     public override void Execute()
     {
+        X.Evaluate();
+        Y.Evaluate();
         // Actualizar estado
         Canvas.Spawn(Convert.ToInt32(X.Value), Convert.ToInt32(Y.Value));
         Canvas.IsSpawnCalled = true; // Marcar como invocado

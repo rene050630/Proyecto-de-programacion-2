@@ -13,11 +13,15 @@ public class DrawCircle : Statement
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
-        int centerX = context.Canvas.Walle.ActualX + (int)dirX.Value * (int)radius.Value;
-        int centerY = context.Canvas.Walle.ActualY + (int)dirY.Value * (int)radius.Value;
+        dirX.Evaluate();
+        dirY.Evaluate();
+        radius.Evaluate();
+        int dirXInt = Convert.ToInt32(dirX.Value);
+        int dirYInt = Convert.ToInt32(dirY.Value);
+        int radiusInt = Convert.ToInt32(radius.Value);
+        int centerX = Canvas.ActualX + dirXInt * radiusInt;
+        int centerY = Canvas.ActualY + dirYInt * radiusInt;
         bool isValid = true;
-        if (!context.Canvas.IsWithinCanvas(centerX, centerY, context.Canvas.Size))
-            errors.Add(new CompilingError(location, ErrorCode.Invalid, "Center is outside the limits of the canvas"));
         if (!dirX.checksemantic(context, errors) || dirX.Type != ExpressionType.Number)
         {
             errors.Add(new CompilingError(
@@ -46,31 +50,27 @@ public class DrawCircle : Statement
             ));
             isValid = false;
         }
-        if ((int)dirX.Value < -1 || (int)dirX.Value > 1)
+        
+        if (dirXInt < -1 || dirXInt > 1)
         {
-            errors.Add(new CompilingError(dirX.location, ErrorCode.Invalid, $"Direction X invalid: {(int)dirX.Value}. Allowed values: -1, 0, 1"));
-            isValid = false;
+            errors.Add(new CompilingError(dirX.location, ErrorCode.Invalid, $"Direction X invalid: {dirXInt}. Allowed values: -1, 0, 1"));
         }
-        if ((int)dirY.Value < -1 || (int)dirY.Value > 1)
+        if (dirYInt < -1 || dirYInt > 1)
         {
-            errors.Add(new CompilingError(dirY.location, ErrorCode.Invalid, $"Direction Y invalid: {(int)dirY.Value}. Allowed values: -1, 0, 1"));
-            isValid = false;
+            errors.Add(new CompilingError(dirY.location, ErrorCode.Invalid, $"Direction Y invalid: {dirYInt}. Allowed values: -1, 0, 1"));
         }
-        if ((int)radius.Value < 1)
+        if (radiusInt < 1)
         {
-            errors.Add(new CompilingError(radius.location, ErrorCode.Invalid, $"Invalid radius: {(int)radius.Value}. It requires to be ≥ 1"));
-            isValid = false;
+            errors.Add(new CompilingError(radius.location, ErrorCode.Invalid, $"Invalid radius: {radiusInt}. It requires to be ≥ 1"));
         }
+        if (!Canvas.IsWithinCanvas(centerX, centerY, Canvas.Size))
+            errors.Add(new CompilingError(location, ErrorCode.Invalid, "Center is outside the limits of the canvas"));
         return isValid;
     }
     public override void Execute()
     {
-        int centerX = Canvas.Walle.ActualX + (int)dirX.Value * (int)radius.Value;
-        int centerY = Canvas.Walle.ActualY + (int)dirY.Value * (int)radius.Value;
-        // Dibujar círculo
-        Canvas.DrawMidpointCircle(centerX, centerY, (int)radius.Value);
-
-        // Actualizar posición de Wall-E
-        Canvas.Walle.MoveTo(centerX, centerY);
+        dirX.Evaluate();
+        dirY.Evaluate();
+        radius.Evaluate();
     }
 }

@@ -13,7 +13,7 @@ public class Equal : BinaryExpression
         Left.Evaluate();
         if(Right.Type == ExpressionType.Number && Left.Type == ExpressionType.Number)
         {
-            this.Value = (double)this.Left.Value == (double)this.Right.Value;
+            this.Value = Convert.ToInt32(Right.Value) == Convert.ToInt32(Left.Value);
         }
         else if(Right.Type == ExpressionType.Boolean && Left.Type == ExpressionType.Boolean)
         {

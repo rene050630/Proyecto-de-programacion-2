@@ -31,7 +31,7 @@ public class LexicalAnalyzer
             foreach (var op in operators.Keys.OrderByDescending(k => k.Length))
                 if (stream.Match(op))
                 {
-                    tokens.Add(new Token(TokenType.Symbol, operators[op], stream.Location));
+                    tokens.Add(new Token(TokenType.Operator, operators[op], stream.Location));
                     return true;
                 }
             return false;
@@ -56,11 +56,11 @@ public class LexicalAnalyzer
         }
 
         /* Returns all tokens read from the code and populate the errors list with all lexical errors detected. */
-        public IEnumerable<Token> GetTokens(string fileName, string code, List<CompilingError> errors)
+        public IEnumerable<Token> GetTokens(string code, List<CompilingError> errors)
         {
             List<Token> tokens = new List<Token>();
 
-            TokenReader stream = new TokenReader(fileName, code);
+            TokenReader stream = new TokenReader(code);
 
             while (!stream.EOF)
             {
@@ -72,7 +72,7 @@ public class LexicalAnalyzer
                 if (stream.ReadID(out value))
                 {
                     if (keywords.ContainsKey(value))
-                        tokens.Add(new Token(TokenType.Keyword, keywords[value], stream.Location));
+                        tokens.Add(new Token(TokenType.KeyWord, keywords[value], stream.Location));
                     else
                         tokens.Add(new Token(TokenType.Identifier, value, stream.Location));
                     continue;
@@ -96,7 +96,7 @@ public class LexicalAnalyzer
                 var unkOp = stream.ReadAny();
                 errors.Add(new CompilingError(stream.Location, ErrorCode.Unknown, unkOp.ToString()));
             }
-
+            tokens.Add(new Token(TokenType.End, "END", stream.Location));
             return tokens;
         }
 
@@ -104,19 +104,15 @@ public class LexicalAnalyzer
         It has some useful methods to do that */
         class TokenReader
         {
-            string FileName;
             string code;
             int pos;
             int line;
-            int lastLB;
 
-            public TokenReader(string fileName, string code)
+            public TokenReader(string code)
             {
-                this.FileName = fileName;
                 this.code = code;
                 this.pos = 0;
                 this.line = 1;
-                this.lastLB = -1;
             }
 
             public CodeLocation Location
@@ -125,9 +121,7 @@ public class LexicalAnalyzer
                 {
                     return new CodeLocation
                     {
-                        File = FileName,
                         Line = line,
-                        Column = pos - lastLB
                     };
                 }
             }
@@ -249,9 +243,8 @@ public class LexicalAnalyzer
                 if (EOL)
                 {
                     line++;
-                    lastLB = pos;
                 }
-                return code[pos++];
+                return this.code[this.pos++];
             }
         }
 

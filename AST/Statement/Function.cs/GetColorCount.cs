@@ -19,6 +19,15 @@ public class GetColorCount : Statement
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
+        x1.Evaluate();
+        x2.Evaluate();
+        y1.Evaluate();
+        y2.Evaluate();
+        color.Evaluate();
+        int X1 = Convert.ToInt32(x1.Value);
+        int X2 = Convert.ToInt32(x2.Value);
+        int Y1 = Convert.ToInt32(y1.Value);
+        int Y2 = Convert.ToInt32(y2.Value);
         bool isValid = true;
         if (!x1.checksemantic(context, errors) || x1.Type != ExpressionType.Number)
         {
@@ -45,6 +54,7 @@ public class GetColorCount : Statement
             errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "color requires to be a string"));
             isValid = false;
         }
+        
         if (color.Value is string stringLiteral &&
             !context.IsValidColor(stringLiteral))
         {
@@ -53,22 +63,22 @@ public class GetColorCount : Statement
             ));
             isValid = false;
         }
-        if ((int)x1.Value < 0)
+        if (X1 < 0)
         {
             errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "x1 requires to be >= 0"));
             isValid = false;
         }
-        if ((int)y1.Value < 0)
+        if (Y1 < 0)
         {
             errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "y1 requires to be >= 0"));
             isValid = false;
         }
-        if ((int)x2.Value < 0)
+        if (X2 < 0)
         {
             errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "x2 requires to be >= 0"));
             isValid = false;
         }
-        if ((int)y2.Value < 0)
+        if (Y2 < 0)
         {
             errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "y2 requires to be >= 0"));
             isValid = false;
@@ -77,6 +87,16 @@ public class GetColorCount : Statement
     }
     public override void Execute()
     {
-        Canvas.GetColorCount((int)x1.Value, (int)x2.Value, (int)y1.Value, (int)y2.Value, (string)color.Value);
+        x1.Evaluate();
+        x2.Evaluate();
+        y1.Evaluate();
+        y2.Evaluate();
+        color.Evaluate();
+        int X1 = Convert.ToInt32(x1.Value);
+        int X2 = Convert.ToInt32(x2.Value);
+        int Y1 = Convert.ToInt32(y1.Value);
+        int Y2 = Convert.ToInt32(y2.Value);
+        string colorValue = (string)color.Value;
+        Canvas.GetColorCount(X1, X2, Y1, Y2, colorValue);
     }
 }

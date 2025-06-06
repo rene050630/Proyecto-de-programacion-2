@@ -1,9 +1,9 @@
 public class GoTo : Statement
 {
-    public Label Label { get; }
+    public string Label { get; }
     public Expression Condition { get; }
     private Context Context;
-    public GoTo(CodeLocation location, Label label, Expression condition, Context context) : base(location)
+    public GoTo(CodeLocation location, string label, Expression condition, Context context) : base(location)
     {
         Label = label;
         Condition = condition;
@@ -11,7 +11,7 @@ public class GoTo : Statement
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
-        if (!context.LabelExists(Label.Name))
+        if (!context.LabelExists(Label))
         {
             errors.Add(new CompilingError(location, ErrorCode.UndefinedLabel, $"Label '{Label}' undefined"));
             return false;
@@ -32,7 +32,7 @@ public class GoTo : Statement
         if (Condition.Value is bool shouldJump && shouldJump)
         {
             // Saltar a la posición de la etiqueta
-            Context.JumpToLabel(Label.Name);
+            Context.JumpToLabel(Label);
         }
 
     }

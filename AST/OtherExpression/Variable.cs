@@ -1,13 +1,14 @@
-
+//REVISAR
 public class Variable : Expression
 {
     public string variable;
     public override ExpressionType Type { get; set; }
     public override object? Value { get; set; }
     private Context context;
-    public Variable(CodeLocation location, string variable) : base(location)
+    public Variable(CodeLocation location, string variable, Context context) : base(location)
     {
         this.variable = variable;
+        this.context = context;
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
@@ -20,6 +21,6 @@ public class Variable : Expression
     }
     public override void Evaluate()
     {
-        Value = context.GetType(variable);
+        Value = context.Execute(variable);
     }
 }

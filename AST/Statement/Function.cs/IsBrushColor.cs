@@ -10,12 +10,14 @@ public class IsBrushColor : Statement
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
+        color.Evaluate();
         bool isValid = false;
         if (!color.checksemantic(context, errors) || color.Type != ExpressionType.Text)
         {
             errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "color requires to be a string"));
             isValid = false;
         }
+        
         if (color.Value is string stringLiteral &&
             !context.IsValidColor(stringLiteral))
         {
@@ -28,6 +30,7 @@ public class IsBrushColor : Statement
     }
     public override void Execute()
     {
+        color.Evaluate();
         Canvas.IsBrushColor((string)color.Value);
     }
 }

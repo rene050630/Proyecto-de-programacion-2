@@ -12,6 +12,7 @@ public class Color : Statement
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
+        color.Evaluate();
         bool isValid = true;
         if (!color.checksemantic(context, errors) || color.Type != ExpressionType.Text)
         {
@@ -32,6 +33,7 @@ public class Color : Statement
     }
     public override void Execute()
     {
+        color.Evaluate();
         // Actualizar el color del pincel
         Canvas.BrushColor = (string)color.Value;
     }

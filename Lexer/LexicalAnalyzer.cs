@@ -25,15 +25,16 @@ class Compiling
                 __LexicalProcess.RegisterOperator("[", TokenValues.OpenSquareBracket);
                 __LexicalProcess.RegisterOperator("]", TokenValues.ClosedSquareBracket);
 
-                __LexicalProcess.RegisterKeyword("||", TokenValues.Or);
-                __LexicalProcess.RegisterKeyword("&&", TokenValues.And);
-                __LexicalProcess.RegisterKeyword("==", TokenValues.Equal);
-                __LexicalProcess.RegisterKeyword("!=", TokenValues.NotEqual);                
-                __LexicalProcess.RegisterKeyword(">", TokenValues.Greater);
-                __LexicalProcess.RegisterKeyword("<", TokenValues.Less);
-                __LexicalProcess.RegisterKeyword("<=", TokenValues.LessT);
-                __LexicalProcess.RegisterKeyword(">=", TokenValues.GreaterT);
+                __LexicalProcess.RegisterOperator("||", TokenValues.Or);
+                __LexicalProcess.RegisterOperator("&&", TokenValues.And);
+                __LexicalProcess.RegisterOperator("<=", TokenValues.LessT);
+                __LexicalProcess.RegisterOperator(">=", TokenValues.GreaterT);
+                __LexicalProcess.RegisterOperator("==", TokenValues.Equal);
+                __LexicalProcess.RegisterOperator("!=", TokenValues.NotEqual);
+                __LexicalProcess.RegisterOperator(">", TokenValues.Greater);
+                __LexicalProcess.RegisterOperator("<", TokenValues.Less);
 
+                __LexicalProcess.RegisterText("\"", "\"");
                 // Comandos clave
                 __LexicalProcess.RegisterKeyword("Spawn", TokenValues.Spawn);
                 __LexicalProcess.RegisterKeyword("Color", TokenValues.Color);
@@ -53,7 +54,6 @@ class Compiling
                 __LexicalProcess.RegisterKeyword("IsBrushSize", TokenValues.IsBrushSize);
                 __LexicalProcess.RegisterKeyword("IsCanvasColor", TokenValues.IsCanvasColor);
 
-                __LexicalProcess.RegisterText("\"", "\"");
             }
 
             return __LexicalProcess;

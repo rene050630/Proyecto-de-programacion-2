@@ -25,7 +25,7 @@ public class Label : Statement
     }
     public override string ToString()
     {
-        return $"{Name}:";
+        return $"{Name}";
     }
     private bool IsIdentifier(string nombre)
     {

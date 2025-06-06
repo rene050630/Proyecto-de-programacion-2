@@ -14,6 +14,11 @@ public class IsCanvasColor : Statement
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
+        color.Evaluate();
+        vertical.Evaluate();
+        horizontal.Evaluate();
+        int X = Convert.ToInt32(vertical.Value);
+        int Y = Convert.ToInt32(horizontal.Value);
         bool isValid = true;
         if (!horizontal.checksemantic(context, errors) || horizontal.Type != ExpressionType.Number)
         {
@@ -29,6 +34,11 @@ public class IsCanvasColor : Statement
         {
             errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "color requires to be a string"));
             isValid = false;
+        }
+        if (X + Canvas.ActualX < 0 || X + Canvas.ActualX >= Canvas.Size || Y + Canvas.ActualY < 0 || Y + Canvas.ActualY >= Canvas.Size)
+        {
+            errors.Add(new CompilingError(location, ErrorCode.Invalid,"La casilla tiene que estar dentro de las dimensiones del canvas"));
+            return false;
         }
         if (color.Value is string stringLiteral &&
             !context.IsValidColor(stringLiteral))

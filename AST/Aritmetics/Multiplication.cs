@@ -11,8 +11,8 @@ public class Mult : BinaryExpression
     {
         Left.Evaluate();
         Right.Evaluate();
-        
-        Value = (double)Right.Value * (double)Left.Value;
+
+        Value = Convert.ToInt32(Right.Value) * Convert.ToInt32(Left.Value);
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {

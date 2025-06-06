@@ -13,7 +13,7 @@ public class GreaterT : BinaryExpression
         Right.Evaluate();
         Left.Evaluate();
 
-        Value = (double)Left.Value >= (double)Right.Value;
+        Value = Convert.ToInt32(Right.Value) >= Convert.ToInt32(Left.Value);
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {

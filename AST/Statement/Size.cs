@@ -10,6 +10,7 @@ public class Size : Statement
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
+        size.Evaluate();
         bool isValid = true;
         if (!size.checksemantic(context, errors) || size.Type != ExpressionType.Number)
         {
@@ -18,14 +19,14 @@ public class Size : Statement
         }
         if (size.Value is int numericLiteral)
         {
-            var value = Convert.ToDouble(numericLiteral);
+            var value = Convert.ToInt32(numericLiteral);
 
             if (value < 1)
             {
                 errors.Add(new CompilingError(
                     location,
                     ErrorCode.Invalid,
-                    "El tamaño mínimo del pincel es 1"
+                    "Minimum brush size: 1"
                 ));
                 isValid = false;
             }
@@ -34,10 +35,11 @@ public class Size : Statement
     }
     public override void Execute()
     {
-        int size = (int)Math.Floor((double)this.size.Value);
+        size.Evaluate();
+        int sizeInt = Convert.ToInt32(size.Value);
         // Ajustar a tamaño válido
-        size = Math.Max(1, size);       // Mínimo 1
-        size = size % 2 == 0 ? size - 1 : size; // Convertir a impar
-        Canvas.BrushSize = size;
+        sizeInt = Math.Max(1, sizeInt);       // Mínimo 1
+        sizeInt = sizeInt % 2 == 0 ? sizeInt - 1 : sizeInt; // Convertir a impar
+        Canvas.BrushSize = sizeInt;
     }
 }

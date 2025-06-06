@@ -1,8 +1,10 @@
 using System.Collections;
+using System;
+using System.Collections.Generic;
 public class TokenStream : IEnumerable<Token>
 {
     private List<Token> tokens;
-    private int position;
+    public int position;
     public int Position { get { return position; } }
 
     public TokenStream(IEnumerable<Token> tokens)
@@ -89,7 +91,7 @@ public class TokenStream : IEnumerable<Token>
 
         return false;
     }
-    public Token Consume(string value, string message) 
+    public Token Consume(string value, string message)
     {
         if (Check(value)) return Advance();
         throw new CompilingError(Peek().codeLocation, ErrorCode.Expected, message);

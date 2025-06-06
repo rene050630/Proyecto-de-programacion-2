@@ -10,9 +10,9 @@ public class Fill : Statement
     {
         bool isValid = true;
         // 2. Obtener posición actual
-        int startX = context.Canvas.Walle.ActualX;
-        int startY = context.Canvas.Walle.ActualY;
-        int canvasSize = context.Canvas.Size;
+        int startX = Canvas.ActualX;
+        int startY = Canvas.ActualY;
+        int canvasSize = Canvas.Size;
 
         // 3. Chequeo semántico: posición válida
         if (startX < 0 || startX >= canvasSize || startY < 0 || startY >= canvasSize)
@@ -24,8 +24,8 @@ public class Fill : Statement
     }
     public override void Execute()
     {
-        int startX = Canvas.Walle.ActualX;
-        int startY = Canvas.Walle.ActualY;
+        int startX = Canvas.ActualX;
+        int startY = Canvas.ActualY;
         string targetColor = Canvas.GetPixel(startX, startY);
         Canvas.FillSpace(startX, startY, targetColor);
     }

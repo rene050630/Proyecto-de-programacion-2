@@ -2,7 +2,6 @@ public class Context
 {
     public Dictionary<string, object> Value = new Dictionary<string, object>();
     private Dictionary<string, ExpressionType> Type = new Dictionary<string, ExpressionType>();
-    public Canvas Canvas { get; set; } // Estado del canvas
     public List<string> ValidColors { get; } = new List<string> { "Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Black", "White", "Transparent" };
     public bool IsValidColor(string color) => ValidColors.Contains(color);
     public List<string> Labels { get; } = new List<string>();
@@ -44,5 +43,10 @@ public class Context
     {
         if (Type.ContainsKey(name)) Type[name] = type;
         else Type.Add(name, type);
+    }
+     public object Execute(string name)
+    {
+        if (Value.ContainsKey(name)) return Value[name];
+        else return null;
     }
 }

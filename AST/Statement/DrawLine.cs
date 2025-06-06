@@ -16,6 +16,12 @@ public class DrawLine : Statement
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
+        dirX.Evaluate();
+        dirY.Evaluate();
+        distance.Evaluate();
+        int distanceInt = Convert.ToInt32(distance.Value);
+        int dirXInt = Convert.ToInt32(dirX.Value);
+        int dirYInt = Convert.ToInt32(dirY.Value);
         bool isValid = true;
         if (!dirX.checksemantic(context, errors) || dirX.Type != ExpressionType.Number)
         {
@@ -45,29 +51,29 @@ public class DrawLine : Statement
             ));
             isValid = false;
         }
-        if ((int)dirX.Value < -1 || (int)dirX.Value > 1)
+        if (dirXInt < -1 || dirXInt > 1)
         {
-            errors.Add(new CompilingError(dirX.location, ErrorCode.Invalid, $"Direction X invalid: {(int)dirX.Value}. Allowed values: -1, 0, 1"));
+            errors.Add(new CompilingError(dirX.location, ErrorCode.Invalid, $"Direction X invalid: {dirXInt}. Allowed values: -1, 0, 1"));
             isValid = false;
         }
-        if ((int)dirY.Value < -1 || (int)dirY.Value > 1)
+        if (dirYInt < -1 || dirYInt > 1)
         {
-            errors.Add(new CompilingError(dirY.location, ErrorCode.Invalid, $"Direction Y invalid: {(int)dirY.Value}. Allowed values: -1, 0, 1"));
+            errors.Add(new CompilingError(dirY.location, ErrorCode.Invalid, $"Direction Y invalid: {dirYInt}. Allowed values: -1, 0, 1"));
             isValid = false;
         }
-        if ((int)distance.Value < 1)
+        if (distanceInt < 1)
         {
-            errors.Add(new CompilingError(distance.location, ErrorCode.Invalid, $"Invalid distance: {(int)distance.Value}. It requires to be ≥ 1"));
+            errors.Add(new CompilingError(distance.location, ErrorCode.Invalid, $"Invalid distance: {distanceInt}. It requires to be ≥ 1"));
             isValid = false;
         }
         return isValid;
     }
     public override void Execute()
     {
-        int intDirX = (int)dirX.Value;
-        int intDirY = (int)dirY.Value;
-        int intDistance = (int)distance.Value;
+        int distanceInt = Convert.ToInt32(distance.Value);
+        int dirXInt = Convert.ToInt32(dirX.Value);
+        int dirYInt = Convert.ToInt32(dirY.Value);
         // Ejecutar en el canvas
-        Canvas.DrawLine(intDirX, intDirY, intDistance);
+        Canvas.DrawLine(dirXInt, dirYInt, distanceInt);
     }
 }

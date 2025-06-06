@@ -1,42 +1,23 @@
+
 public class Number : AtomsExpression
 {
-    public bool IsInt
-    {
-        get
-        {
-            int a;
-            return int.TryParse(Value.ToString(), out a);
-        }
-    }
 
+    public Number(int value, CodeLocation location) : base(location)
+    {
+        this.Value = value;
+    }
+    public override object? Value{get; set;}
     public override ExpressionType Type
     {
-        get
-        {
-            return ExpressionType.Number;
-        }
-        set { }
+        get { return ExpressionType.Number; }
+        set{}
     }
-
-    public override object? Value { get; set; }
-    
-    public Number(double value, CodeLocation location) : base(location)
-    {
-        Value = value;
-    }
-    
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
         return true;
     }
-
     public override void Evaluate()
     {
         
-    }
-
-    public override string ToString()
-    {
-        return string.Format("{0}",Value);
     }
 }

@@ -1,9 +1,10 @@
 public enum TokenType {
     Number,
     Text,
-    Keyword,
+    KeyWord,
     Identifier,
-    Symbol
+    Operator,
+    End
 }
 public class Token
 {

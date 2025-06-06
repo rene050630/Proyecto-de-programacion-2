@@ -15,7 +15,7 @@ public class Pow : BinaryExpression
         Right.Evaluate();
         Left.Evaluate();
 
-        Value = Math.Pow((double)Left.Value, (double)Right.Value);
+        Value = Math.Pow(Convert.ToInt32(Right.Value), Convert.ToInt32(Left.Value));
     }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {

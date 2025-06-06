@@ -5,12 +5,17 @@ public class ProgramNode : AST
     public List<Statement> Statements { get; }
     public Canvas Canvas { get; }
 
-    public ProgramNode(CodeLocation location, List<Statement> Statements, Canvas Canvas) : base(location)
+    public ProgramNode(CodeLocation location, List<Statement> Statements) : base(location)
     {
         this.Statements = Statements;
-        this.Canvas = Canvas;
     }
-
+    public void Execute()
+    {
+        foreach (Statement item in Statements)
+        {
+            item.Execute();
+        }
+    }
     public override bool checksemantic(Context context, List<CompilingError> errors)
     {
         bool isValid = true;

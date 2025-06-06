@@ -1,75 +1,87 @@
 ﻿
 public class Program
 {
-    public static void TestParser()
-{
-    // Caso de prueba 1: Expresión simple
-    var tokens = new List<Token>
+//     public static void TestParser()
+// {
+//     // // Caso de prueba 1: Expresión simple
+//     // var lexer = Compiling.Lexical;
+//     // string testCode = @"Spawn(5)";
+//     // var errors = new List<CompilingError>();
+//     // var tokens = lexer.GetTokens("test_file.txt", testCode, errors);
+//     // Context context = new Context();
+//     // Canvas canvas = new Canvas(256);
+//     // var parser = new Parser(tokens.ToList(), new TokenStream(tokens), canvas, context);
+//     // var result = parser.ParseProgram();
+//     // System.Console.WriteLine(result.checksemantic(context, errors));
+//     // // Añadir más casos de prueba...
+// }
+
+    // Ejecutar en Main
+    static void Main(string[] args)
     {
-        new Token(TokenType.Keyword, "", new CodeLocation()),
-    };
-    
-    var parser = new Parser(tokens, new TokenStream(tokens));
-
-        try
+        //TestParser();
+        string codigoFuente = File.ReadAllText("test1.txt");
+         //string codigoFuente = @"Spawn (1, 1)
+        //is_brush_color_blue <- 1";
+        Context Context = new Context();
+        Canvas canvas = new Canvas(10);
+        List<CompilingError> errors = new List<CompilingError>();
+        var lexer = Compiling.Lexical;
+        var tokens = lexer.GetTokens(codigoFuente, errors);
+        Parser parser = new Parser(tokens.ToList(), new TokenStream(tokens), canvas, Context);
+        ProgramNode block = parser.ParseProgram();
+        //block.Execute();
+        block.checksemantic(Context, errors);
+        foreach (CompilingError item in errors)
         {
-            var result = parser.ParseStatement();
-            Console.WriteLine("Prueba 1 exitosa:");
-            Console.WriteLine($"Tipo: {result.GetType().Name}");
+            System.Console.WriteLine(item.Argument);
+            System.Console.WriteLine(item.Location.Line);
         }
-        catch (CompilingError ex)
-        {
-            System.Console.WriteLine(ex.Argument);
-            Console.WriteLine($"Error en prueba 1: {ex.Message}");
-        }
-    
-    // Añadir más casos de prueba...
-}
+    }
+//     static void Main(string[] args)
+//     {
+//         var lexer = Compiling.Lexical;
 
-// Ejecutar en Main
-static void Main(string[] args)
-{
-    TestParser();
+//         // 2. Código de prueba
+//         string testCode = @"Spawn (1, 1)
+//  is_brush_color_blue <- 1 
+//         ";
+//         // 3. Procesar el código
+//         var errors = new List<CompilingError>();
+//         var tokens = lexer.GetTokens(testCode, errors);
+//         var stream = new TokenStream(tokens);
+//         foreach (var syy in stream)
+//         {
+//             System.Console.WriteLine(syy.value);
+//             //System.Console.WriteLine(syy.tokenType);
+//         }
+//     }
 }
-    // static void Main(string[] args)
-    // {
-    //     var lexer = Compiling.Lexical;
-
-    //     // 2. Código de prueba
-    //     string testCode = @"Spawn(0, 0) 'Circle' at (100, 200)
-    //     n <- 5 + 3 * -2
-    //     DrawLine from [0, 0] to [100, 100]
-    //     xy = 42.5 * (GetActualX / 2)
-    //     ";
-    //     // 3. Procesar el código
-    //     var errors = new List<CompilingError>();
-    //     var tokens = lexer.GetTokens("test_file.txt", testCode, errors);
-    //     var stream = new TokenStream(tokens);
     //     var parser = new Parser(tokens.ToList(), stream);
 
-    //     // Act
-    //     var program = parser.ParseProgram();
-    //     System.Console.WriteLine(program);
-    //     // Assert
-    //     Assert.IsInstanceOf<Context>(program);
-    //     Assert.AreEqual(3, program.Statements.Count);
-    //     Assert.IsInstanceOf<Size>(program.Statements[0]);
-    //     Assert.IsInstanceOf<Color>(program.Statements[1]);
-    //     Assert.IsInstanceOf<Spawn>(program.Statements[2]);
-    //     // 4. Mostrar resultados
-    //     // Console.WriteLine("==== TOKENS ENCONTRADOS ====");
-    //     // foreach (var token in tokens)
-    //     // {
-    //     //     Console.WriteLine(token);
-    //     // }
+        //     // Act
+        //     var program = parser.ParseProgram();
+        //     System.Console.WriteLine(program);
+        //     // Assert
+        //     Assert.IsInstanceOf<Context>(program);
+        //     Assert.AreEqual(3, program.Statements.Count);
+        //     Assert.IsInstanceOf<Size>(program.Statements[0]);
+        //     Assert.IsInstanceOf<Color>(program.Statements[1]);
+        //     Assert.IsInstanceOf<Spawn>(program.Statements[2]);
+        //     // 4. Mostrar resultados
+        //     // Console.WriteLine("==== TOKENS ENCONTRADOS ====");
+        //     // foreach (var token in tokens)
+        //     // {
+        //     //     Console.WriteLine(token);
+        //     // }
 
-    //     // Console.WriteLine("\n==== ERRORES ====");
-    //     // foreach (var error in errors)
-    //     // {
-    //     //     Console.WriteLine(error);
-    //     // }
-    // }
-}
+        //     // Console.WriteLine("\n==== ERRORES ====");
+        //     // foreach (var error in errors)
+        //     // {
+        //     //     Console.WriteLine(error);
+        //     // }
+        // }
+    
 // public class ParserTests
 // {
 //     public Parser CreateParser(string code)

@@ -21,6 +21,7 @@ public class IsBrushSize : Statement
     }
     public override void Execute()
     {
-        Canvas.IsBrushSize((int)size.Value);
+        size.Evaluate();
+        Canvas.IsBrushSize(Convert.ToInt32(size.Value));
     }
 }
