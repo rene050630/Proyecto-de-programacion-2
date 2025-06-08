@@ -1,0 +1,121 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|d:\\walle\\wallevs\\windowsformsapp1\\compiler\\proyecto-de-programacion-2\\interfaz\\interfaz walle\\windowsformsapp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|solutionrelative:windowsformsapp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|d:\\walle\\wallevs\\windowsformsapp1\\compiler\\proyecto-de-programacion-2\\interfaz\\interfaz walle\\windowsformsapp1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|solutionrelative:windowsformsapp1\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|d:\\walle\\wallevs\\windowsformsapp1\\compiler\\proyecto-de-programacion-2\\interfaz\\interfaz walle\\windowsformsapp1\\programnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|solutionrelative:windowsformsapp1\\programnode.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|d:\\walle\\wallevs\\windowsformsapp1\\compiler\\proyecto-de-programacion-2\\interfaz\\interfaz walle\\windowsformsapp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "RelativeMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|solutionrelative:windowsformsapp1\\form1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|d:\\walle\\wallevs\\windowsformsapp1\\compiler\\proyecto-de-programacion-2\\interfaz\\interfaz walle\\windowsformsapp1\\ast\\statements\\iscanvascolor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|solutionrelative:windowsformsapp1\\ast\\statements\\iscanvascolor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|d:\\walle\\wallevs\\windowsformsapp1\\compiler\\proyecto-de-programacion-2\\interfaz\\interfaz walle\\windowsformsapp1\\ast\\statements\\drawrectangle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C0FA6633-95E2-44FB-9E3D-ABAC09EE4CA0}|WindowsFormsApp1\\WindowsFormsApp1.csproj|solutionrelative:windowsformsapp1\\ast\\statements\\drawrectangle.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\Program.cs",
+              "RelativeDocumentMoniker": "WindowsFormsApp1\\Program.cs",
+              "ToolTip": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\Program.cs*",
+              "RelativeToolTip": "WindowsFormsApp1\\Program.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T04:13:20.253Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Form1.cs",
+              "DocumentMoniker": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\Form1.cs",
+              "RelativeDocumentMoniker": "WindowsFormsApp1\\Form1.cs",
+              "ToolTip": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\Form1.cs*",
+              "RelativeToolTip": "WindowsFormsApp1\\Form1.cs*",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAABAAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T04:13:31.461Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Form1.cs [Dise\u00F1o]",
+              "DocumentMoniker": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\Form1.cs",
+              "RelativeDocumentMoniker": "WindowsFormsApp1\\Form1.cs",
+              "ToolTip": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\Form1.cs [Dise\u00F1o]*",
+              "RelativeToolTip": "WindowsFormsApp1\\Form1.cs [Dise\u00F1o]*",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T04:13:10.698Z",
+              "EditorCaption": " [Dise\u00F1o]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ProgramNode.cs",
+              "DocumentMoniker": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\ProgramNode.cs",
+              "RelativeDocumentMoniker": "WindowsFormsApp1\\ProgramNode.cs",
+              "ToolTip": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\ProgramNode.cs",
+              "RelativeToolTip": "WindowsFormsApp1\\ProgramNode.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T04:12:37.63Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IsCanvasColor.cs",
+              "DocumentMoniker": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\AST\\Statements\\IsCanvasColor.cs",
+              "RelativeDocumentMoniker": "WindowsFormsApp1\\AST\\Statements\\IsCanvasColor.cs",
+              "ToolTip": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\AST\\Statements\\IsCanvasColor.cs",
+              "RelativeToolTip": "WindowsFormsApp1\\AST\\Statements\\IsCanvasColor.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAApAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T04:09:36.121Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "DrawRectangle.cs",
+              "DocumentMoniker": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\AST\\Statements\\DrawRectangle.cs",
+              "RelativeDocumentMoniker": "WindowsFormsApp1\\AST\\Statements\\DrawRectangle.cs",
+              "ToolTip": "D:\\Walle\\WalleVs\\WindowsFormsApp1\\Compiler\\Proyecto-de-programacion-2\\Interfaz\\Interfaz Walle\\WindowsFormsApp1\\AST\\Statements\\DrawRectangle.cs",
+              "RelativeToolTip": "WindowsFormsApp1\\AST\\Statements\\DrawRectangle.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAABrAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-08T04:07:06.628Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
