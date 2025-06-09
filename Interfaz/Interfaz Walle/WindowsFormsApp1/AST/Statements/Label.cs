@@ -21,6 +21,11 @@ namespace WindowsFormsApp1
                 ));
                 return false;
             }
+            if (context.LabelExists(Name)) 
+            {
+                errors.Add(new CompilingError(location, ErrorCode.Invalid, $"Label '{Name}' already defined"));
+                return false;
+            }
             context.RegisterLabel(Name, location.Line);
             context.Labels.Add(Name);
             return true;

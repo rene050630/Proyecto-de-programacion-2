@@ -163,8 +163,8 @@ namespace WindowsFormsApp1
                 return new Bool(true, stream.Previous().codeLocation);
             else if (stream.Match(TokenType.Number))
             {
-                Token variable = stream.Previous();
-                return new Number(Convert.ToInt32(variable.value), stream.Previous().codeLocation);
+                Expression left = new Number(Convert.ToInt32(stream.Previous().value), stream.Previous().codeLocation);
+                return ContinueExpression(left);
             }
             else if (stream.Match(TokenValues.OpenBracket))
             {
@@ -176,10 +176,54 @@ namespace WindowsFormsApp1
             {
                 Token variable = stream.Previous();
                 Expression expr = new Variable(stream.Peek().codeLocation, variable.value, context);
-                return expr;
+                return ContinueExpression(expr);
             }
             else
                 throw new CompilingError(stream.Previous().codeLocation, ErrorCode.Expected, "An expression was expected");
+        }
+
+        // Nuevo método para continuar construyendo expresiones binarias
+        private Expression ContinueExpression(Expression left)
+        {
+            // Verifica si hay operadores binarios después
+            if (stream.Match(TokenValues.Add) ||
+                stream.Match(TokenValues.Sub) ||
+                stream.Match(TokenValues.Mul) ||
+                stream.Match(TokenValues.Div) ||
+                stream.Match(TokenValues.Pow) ||
+                stream.Match(TokenValues.Module) ||
+                stream.Match(TokenValues.Equal) ||
+                stream.Match(TokenValues.NotEqual) ||
+                stream.Match(TokenValues.Greater) ||
+                stream.Match(TokenValues.Less) ||
+                stream.Match(TokenValues.GreaterT) ||
+                stream.Match(TokenValues.LessT) ||
+                stream.Match(TokenValues.And) ||
+                stream.Match(TokenValues.Or))
+            {
+                Token opToken = stream.Previous();
+                Expression right = expression();  // Parsear la siguiente expresión
+
+                // Crear el nodo binario apropiado
+                switch (opToken.value)
+                {
+                    case TokenValues.Add:
+                        return new Add(opToken.codeLocation, left, right);
+                    case TokenValues.Sub:
+                        return new Subs(opToken.codeLocation, left, right);
+                    case TokenValues.Mul:
+                        return new Mult(opToken.codeLocation, left, right);
+                    case TokenValues.Div:
+                        return new Div(opToken.codeLocation, left, right);
+                    case TokenValues.Module:
+                        return new Module(opToken.codeLocation, left, right);
+                    case TokenValues.Pow:
+                        return new Pow(opToken.codeLocation, left, right);
+                    case TokenValues.OpenBracket:
+                        return new ParenthesizedExpression(opToken.codeLocation, right);
+                }
+            }
+            return left;
         }
         #endregion
         #region Statement
@@ -195,14 +239,19 @@ namespace WindowsFormsApp1
                 try
                 {
                     statements.Add(ParseStatement());
-                    System.Console.WriteLine("ww");
-                    // Manejar EOL después de cada sentencia
+
+                    //Manejar EOL después de cada sentencia -MODIFICADO
                     if (!stream.Match(TokenType.EOL))
                     {
+                        // Permitir fin de archivo sin EOL
                         if (!stream.End && !stream.Match(TokenType.End))
                         {
-                            throw new CompilingError(stream.Peek().codeLocation, ErrorCode.Expected,
-                                "End of line expected after statement");
+                            // Solo error si no es el final
+                            if (!(stream.Peek().tokenType == TokenType.End))
+                            {
+                                throw new CompilingError(stream.Peek().codeLocation, ErrorCode.Expected,
+                                    "End of line expected after statement");
+                            }
                         }
                     }
 
@@ -211,10 +260,10 @@ namespace WindowsFormsApp1
                 }
                 catch (CompilingError error)
                 {
-           
                     if (Synchronize(error)) break;
                 }
             } while (!stream.End && !stream.Match(TokenType.End));
+
             return new ProgramNode(new CodeLocation(), statements);
         }
         public bool Synchronize(CompilingError error) //Recupera el análisis después de un error
@@ -268,8 +317,7 @@ namespace WindowsFormsApp1
         public Statement VarDeclaration(Expression expresions, CodeLocation location)
         {
             Token operador = stream.Previous();
-            if (stream.Match(TokenValues.Fill)) return ParseFill();
-            else if (stream.Match(TokenValues.GetActualX)) return ParseGetActualX();
+            if (stream.Match(TokenValues.GetActualX)) return ParseGetActualX();
             else if (stream.Match(TokenValues.GetActualY)) return ParseGetActualY();
             else if (stream.Match(TokenValues.GetCanvasSize)) return ParseGetCanvasSize();
             else if (stream.Match(TokenValues.GetColorCount)) return ParseGetColorCount();
@@ -403,7 +451,7 @@ namespace WindowsFormsApp1
             b = expression();
 
             stream.Consume(TokenValues.ClosedBracket, "A ) was expected"); // ')'
-            return new DrawRectangle(location, a, b, x, y, z, Canvas);
+            return new DrawRectangle(location, x, y, z, a, b, Canvas);
         }
         private GoTo ParseGoto()
         {
@@ -484,7 +532,7 @@ namespace WindowsFormsApp1
             b = expression();
 
             stream.Consume(TokenValues.ClosedBracket, "A ) was expected"); // ')'
-            return new GetColorCount(location, Canvas, b, x, y, z, a);
+            return new GetColorCount(location, Canvas, x, y, z, a, b);
         }
 
         private GetCanvasSize ParseGetCanvasSize()

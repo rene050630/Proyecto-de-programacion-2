@@ -19,27 +19,26 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
+            if (!horizontal.checksemantic(context, errors) || horizontal.Type != ExpressionType.Number)
+            {
+                errors.Add(new CompilingError(horizontal.location, ErrorCode.Invalid, "Horizontal requires to be a number"));
+                return false;
+            }
+            if (!vertical.checksemantic(context, errors) || vertical.Type != ExpressionType.Number)
+            {
+                errors.Add(new CompilingError(vertical.location, ErrorCode.Invalid, "Vertical requires to be a number"));
+                return false;
+            }
+            if (!color.checksemantic(context, errors) || color.Type != ExpressionType.Text)
+            {
+                errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "color requires to be a string"));
+                return false;
+            }
             color.Evaluate();
             vertical.Evaluate();
             horizontal.Evaluate();
             int X = Convert.ToInt32(vertical.Value);
             int Y = Convert.ToInt32(horizontal.Value);
-            bool isValid = true;
-            if (!horizontal.checksemantic(context, errors) || horizontal.Type != ExpressionType.Number)
-            {
-                errors.Add(new CompilingError(horizontal.location, ErrorCode.Invalid, "Horizontal requires to be a number"));
-                isValid = false;
-            }
-            if (!vertical.checksemantic(context, errors) || vertical.Type != ExpressionType.Number)
-            {
-                errors.Add(new CompilingError(vertical.location, ErrorCode.Invalid, "Vertical requires to be a number"));
-                isValid = false;
-            }
-            if (!color.checksemantic(context, errors) || color.Type != ExpressionType.Text)
-            {
-                errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "color requires to be a string"));
-                isValid = false;
-            }
             if (X + Canvas.ActualX < 0 || X + Canvas.ActualX >= Canvas.Size || Y + Canvas.ActualY < 0 || Y + Canvas.ActualY >= Canvas.Size)
             {
                 errors.Add(new CompilingError(location, ErrorCode.Invalid, "La casilla tiene que estar dentro de las dimensiones del canvas"));
@@ -51,9 +50,9 @@ namespace WindowsFormsApp1
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid,
                     $"Color '{stringLiteral}' is invalid. Allowed colors: {string.Join(", ", context.ValidColors)}"
                 ));
-                isValid = false;
+                return false;
             }
-            return isValid;
+            return true;
         }
         public override void Execute()
         {

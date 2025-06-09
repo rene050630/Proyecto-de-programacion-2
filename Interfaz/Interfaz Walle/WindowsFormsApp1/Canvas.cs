@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Windows.Forms;
 namespace WindowsFormsApp1
 {
     public enum Colors { Red, Blue, Green, Yellow, Orange, Purple, Black, White, Transparent }
@@ -10,8 +11,7 @@ namespace WindowsFormsApp1
         public Colors[,] board;
         public int ActualX;
         public int ActualY;
-        public Colors BrushColor = Colors.Blue;
-        public Colors BoardColor;
+        public Colors BrushColor = Colors.Yellow;
         public int BrushSize = 1;
         public int Size;
         public bool IsSpawnCalled = false;
@@ -42,7 +42,7 @@ namespace WindowsFormsApp1
             board = newBoard;
             Size = newSize;
             ActualX = Math.Min(ActualX, newSize - 1);
-            ActualY = Math.Min(ActualX, newSize - 1);
+            ActualY = Math.Min(ActualY, newSize - 1);
         }
         public void MoveTo(int x, int y)
         {
@@ -82,7 +82,7 @@ namespace WindowsFormsApp1
         }
         public int GetActualY()
         {
-            return ActualX;
+            return ActualY;
         }
         public Colors GetPixel(int x, int y) => board[x, y];
         public void Spawn(int x, int y)
@@ -120,14 +120,14 @@ namespace WindowsFormsApp1
 
         private void SetPixel(int x, int y)
         {
-            if (IsPositionValid(x, y) && BoardColor != Colors.Transparent)
-                board[x, y] = BoardColor;
+            if (IsPositionValid(x, y) && BrushColor != Colors.Transparent)
+                board[x, y] = BrushColor;
         }
         public bool IsPositionValid(int x, int y)
             => x >= 0 && x < Size && y >= 0 && y < Size;
         public void DrawMidpointCircle(int cx, int cy, int radius)
         {
-            if (BoardColor == Colors.Transparent) return;
+            if (BrushColor == Colors.Transparent) return;
 
             int x = radius;
             int y = 0;
@@ -244,7 +244,7 @@ namespace WindowsFormsApp1
         private void ExploreNeighbor(int x, int y, Queue<(int x, int y)> queue, bool[,] visited, Colors targetColor)
         {
             // 9. Validar límites del canvas
-            if (IsPositionValid(x, y))
+            if (!IsPositionValid(x, y))
                 return;
 
             // 10. Evitar reprocesar celdas

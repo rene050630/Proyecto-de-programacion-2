@@ -19,7 +19,7 @@ namespace WindowsFormsApp1
         public override void Execute()
         {
             Name.Evaluate();
-            //if (Name is Variable)
+            if (Name is Variable)
             {
                 if (Operator.value == TokenValues.Assign)
                 {

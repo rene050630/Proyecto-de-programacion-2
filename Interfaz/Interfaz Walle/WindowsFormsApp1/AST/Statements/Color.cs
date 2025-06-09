@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Drawing;
 
 namespace WindowsFormsApp1
 {
@@ -15,24 +16,23 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            color.Evaluate();
-            bool isValid = true;
             if (!color.checksemantic(context, errors) || color.Type != ExpressionType.Text)
             {
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "Colors requieres to be strings"));
-                isValid = false;
+                return false;
             }
-            if (color.Value is string stringLiteral &&
-                !context.IsValidColor(stringLiteral))
+            color.Evaluate();
+            string colorValue = color.Value.ToString().ToLower();
+            if(!context.IsValidColor(colorValue))
             {
                 errors.Add(new CompilingError(
                     color.location,
                     ErrorCode.Invalid,
-                    $"Color '{stringLiteral}' is invalid. Allowed colors: {string.Join(", ", context.ValidColors)}"
+                    $"Color '{colorValue}' is invalid. Allowed colors: {string.Join(", ", context.ValidColors)}"
                 ));
-                isValid = false;
+                return false;
             }
-            return isValid;
+            return true;
         }
         public override void Execute()
         {
@@ -51,6 +51,23 @@ namespace WindowsFormsApp1
                 case "purple": Canvas.BrushColor = Colors.Purple; break;
                 case "transparent": Canvas.BrushColor = Colors.Transparent; break;
                 default: break;
+            }
+            ConvertCanvasColor(Canvas.BrushColor);
+        }
+        public Color ConvertCanvasColor(Colors canvasColor)
+        {
+            switch (canvasColor)
+            {
+                case Colors.Blue: return Color.Blue;
+                case Colors.Red: return Color.Red;
+                case Colors.Green: return Color.Green;
+                case Colors.Yellow: return Color.Yellow;
+                case Colors.Black: return Color.Black;
+                case Colors.White: return Color.White;
+                case Colors.Purple: return Color.Purple;
+                case Colors.Orange: return Color.Orange;
+                case Colors.Transparent: return Color.Transparent;
+                default: return Color.White;
             }
         }
     }

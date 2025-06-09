@@ -14,8 +14,8 @@ namespace WindowsFormsApp1
         }
         public override void Evaluate()
         {
-            Right.Evaluate();
             Left.Evaluate();
+            Right.Evaluate();
             if (Right.Type == ExpressionType.Number && Left.Type == ExpressionType.Number)
             {
                 this.Value = Convert.ToInt32(Right.Value) == Convert.ToInt32(Left.Value);
@@ -24,6 +24,7 @@ namespace WindowsFormsApp1
             {
                 this.Value = (bool)this.Left.Value == (bool)this.Right.Value;
             }
+            Type = ExpressionType.Boolean;
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
@@ -42,13 +43,13 @@ namespace WindowsFormsApp1
                 return false;
             }
         }
-        public override string ToString()
-        {
-            if (Value == null)
-            {
-                return string.Format("({0} == {1})", Left, Right);
-            }
-            return Value.ToString();
-        }
+        //public override string ToString()
+        //{
+        //    if (Value == null)
+        //    {
+        //        return string.Format("({0} == {1})", Left, Right);
+        //    }
+        //    return Value.ToString();
+        //}
     }
 }

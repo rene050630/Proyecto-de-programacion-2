@@ -72,5 +72,6 @@ public class DrawCircle : Statement
         dirX.Evaluate();
         dirY.Evaluate();
         radius.Evaluate();
+        Canvas.DrawMidpointCircle(Convert.ToInt32(dirX.Value), Convert.ToInt32(dirY.Value), Convert.ToInt32(radius.Value));
     }
 }

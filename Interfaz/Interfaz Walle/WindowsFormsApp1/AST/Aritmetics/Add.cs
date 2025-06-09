@@ -33,13 +33,13 @@ namespace WindowsFormsApp1
             Type = ExpressionType.Number;
             return right && left;
         }
-        public override string ToString()
-        {
-            if (Value == null)
-            {
-                return string.Format("({0} + {1})", Left, Right);
-            }
-            return Value.ToString();
-        }
+        //public override string ToString()
+        //{
+        //    if (Value == null)
+        //    {
+        //        return string.Format("({0} + {1})", Left, Right);
+        //    }
+        //    return Value.ToString();
+        //}
     }
 }

@@ -65,7 +65,7 @@ namespace WindowsFormsApp1
             {
                 drawingCanvas.ActualX = canvasX;
                 drawingCanvas.ActualY = canvasY;
-                drawingCanvas.board[canvasY, canvasX] = drawingCanvas.BrushColor;
+                drawingCanvas.board[canvasX, canvasY] = drawingCanvas.BrushColor;
                 picCanvas.Invalidate();
             }
         }
@@ -102,9 +102,9 @@ namespace WindowsFormsApp1
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 
-            for (int y = 0; y < drawingCanvas.Size; y++)
+            for (int x = 0; x < drawingCanvas.Size; x++)
             {
-                for (int x = 0; x < drawingCanvas.Size; x++)
+                for (int y = 0; y < drawingCanvas.Size; y++)
                 {
                     var rect = new Rectangle(
                         x * pixelSize,
@@ -113,7 +113,7 @@ namespace WindowsFormsApp1
                         pixelSize
                     );
 
-                    Color color = ConvertCanvasColor(drawingCanvas.board[y, x]);
+                    Color color = ConvertCanvasColor(drawingCanvas.board[x, y]);
 
                     using (var brush = new SolidBrush(color))
                     {
@@ -126,7 +126,7 @@ namespace WindowsFormsApp1
             DrawWallEPositionIndicator(e.Graphics);
         }
 
-        private Color ConvertCanvasColor(Colors canvasColor)
+        public Color ConvertCanvasColor(Colors canvasColor)
         {
             switch (canvasColor)
             {
@@ -183,26 +183,37 @@ namespace WindowsFormsApp1
 
         private void executeButton_Click(object sender, EventArgs e)
         {
-            richTextBox1.Text = " ";
+            richTextBox1.Text = string.Empty;
             string codigoFuente = TextEditor.Text;
-            Context Context = new Context();
+
+            // Crea un NUEVO contexto y lista de errores en cada ejecución
+            Context context = new Context();
             List<CompilingError> errors = new List<CompilingError>();
+
             var lexer = Compiling.Lexical;
             var tokens = lexer.GetTokens(codigoFuente, errors);
-            Parser parser = new Parser(tokens.ToList(), new TokenStream(tokens), drawingCanvas, Context, errors);
+
+            // Crea un NUEVO parser con los nuevos tokens y contexto
+            Parser parser = new Parser(
+                tokens.ToList(),
+                new TokenStream(tokens),
+                drawingCanvas,
+                context,
+                errors
+            );
+
             ProgramNode block = parser.ParseProgram();
-            block.checksemantic(Context, errors);
-            if(errors.Count == 0)
+            block.checksemantic(context, errors);
+
+            if (errors.Count == 0)
             {
                 block.Execute();
             }
             else
             {
-                string s;
                 foreach (CompilingError item in errors)
                 {
-                    s = item.ToString() + "\n";
-                    richTextBox1.Text += s;
+                    richTextBox1.Text += item.ToString() + "\n";
                 }
             }
             UpdatePictureBoxSize();

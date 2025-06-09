@@ -15,8 +15,6 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            Condition.Evaluate();
-            Label.Execute();
             if (!context.LabelExists(Label.Name))
             {
                 errors.Add(new CompilingError(location, ErrorCode.UndefinedLabel, $"Label '{Label}' undefined"));
@@ -32,8 +30,8 @@ namespace WindowsFormsApp1
         }
         public override void Execute()
         {
-            // Evaluar la condición
             Condition.Evaluate();
+            Label.Execute();
             if (Condition is Bool condition && (bool)condition.Value)
             {
                 Context.JumpToLabel(Label.Name);

@@ -14,12 +14,10 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            color.Evaluate();
-            bool isValid = false;
             if (!color.checksemantic(context, errors) || color.Type != ExpressionType.Text)
             {
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "color requires to be a string"));
-                isValid = false;
+                return false;
             }
 
             if (color.Value is string stringLiteral &&
@@ -28,9 +26,9 @@ namespace WindowsFormsApp1
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid,
                     $"Color '{stringLiteral}' is invalid. Allowed colors: {string.Join(", ", context.ValidColors)}"
                 ));
-                isValid = false;
+                return false;
             }
-            return isValid;
+            return true;
         }
         public override void Execute()
         {

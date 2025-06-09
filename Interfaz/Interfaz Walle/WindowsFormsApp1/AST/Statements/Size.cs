@@ -15,13 +15,12 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            size.Evaluate();
-            bool isValid = true;
             if (!size.checksemantic(context, errors) || size.Type != ExpressionType.Number)
             {
                 errors.Add(new CompilingError(location, ErrorCode.Invalid, "Size requieres to be a number"));
-                isValid = false;
+                return false;
             }
+            size.Evaluate();
             if (size.Value is int numericLiteral)
             {
                 var value = Convert.ToInt32(numericLiteral);
@@ -33,10 +32,10 @@ namespace WindowsFormsApp1
                         ErrorCode.Invalid,
                         "Minimum brush size: 1"
                     ));
-                    isValid = false;
+                    return false;
                 }
             }
-            return isValid;
+            return true;
         }
         public override void Execute()
         {

@@ -1,2 +1,2 @@
 Spawn (1, 1)
-DrawCircle(1 1, 1
+DrawCircle(1, 1, 1)

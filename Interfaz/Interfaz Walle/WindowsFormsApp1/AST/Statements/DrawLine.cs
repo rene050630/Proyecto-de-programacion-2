@@ -20,13 +20,6 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            dirX.Evaluate();
-            dirY.Evaluate();
-            distance.Evaluate();
-            int distanceInt = Convert.ToInt32(distance.Value);
-            int dirXInt = Convert.ToInt32(dirX.Value);
-            int dirYInt = Convert.ToInt32(dirY.Value);
-            bool isValid = true;
             if (!dirX.checksemantic(context, errors) || dirX.Type != ExpressionType.Number)
             {
                 errors.Add(new CompilingError(
@@ -34,7 +27,7 @@ namespace WindowsFormsApp1
                     ErrorCode.Invalid,
                     "Direction X requires to be a number"
                 ));
-                isValid = false;
+                return false;
             }
 
             if (!dirY.checksemantic(context, errors) || dirY.Type != ExpressionType.Number)
@@ -44,7 +37,7 @@ namespace WindowsFormsApp1
                     ErrorCode.Invalid,
                     "Direction Y requires to be a number"
                 ));
-                isValid = false;
+                return false;
             }
             if (!distance.checksemantic(context, errors) || distance.Type != ExpressionType.Number)
             {
@@ -53,24 +46,30 @@ namespace WindowsFormsApp1
                     ErrorCode.Invalid,
                     "Distance requires to be a number"
                 ));
-                isValid = false;
+                return false;
             }
+            dirX.Evaluate();
+            dirY.Evaluate();
+            distance.Evaluate();
+            int distanceInt = Convert.ToInt32(distance.Value);
+            int dirXInt = Convert.ToInt32(dirX.Value);
+            int dirYInt = Convert.ToInt32(dirY.Value);
             if (dirXInt < -1 || dirXInt > 1)
             {
                 errors.Add(new CompilingError(dirX.location, ErrorCode.Invalid, $"Direction X invalid: {dirXInt}. Allowed values: -1, 0, 1"));
-                isValid = false;
+                return false;
             }
-            if (dirYInt < -1 || dirYInt > 1)
+            else if (dirYInt < -1 || dirYInt > 1)
             {
                 errors.Add(new CompilingError(dirY.location, ErrorCode.Invalid, $"Direction Y invalid: {dirYInt}. Allowed values: -1, 0, 1"));
-                isValid = false;
+                return false;
             }
-            if (distanceInt < 1)
+            else if (distanceInt < 1)
             {
                 errors.Add(new CompilingError(distance.location, ErrorCode.Invalid, $"Invalid distance: {distanceInt}. It requires to be ≥ 1"));
-                isValid = false;
+                return false;
             }
-            return isValid;
+            return true;
         }
         public override void Execute()
         {

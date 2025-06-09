@@ -16,8 +16,6 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            X.Evaluate();
-            Y.Evaluate();
             // 1. Validar que las expresiones X e Y sean numéricas
             if (!X.checksemantic(context, errors) || X.Type != ExpressionType.Number)
             {
@@ -32,6 +30,8 @@ namespace WindowsFormsApp1
                     "Coordenada Y debe ser numérica"));
                 return false;
             }
+            X.Evaluate();
+            Y.Evaluate();
             if (Convert.ToInt32(X.Value) < 0 || Convert.ToInt32(X.Value) >= Canvas.Size || Convert.ToInt32(Y.Value) < 0 || Convert.ToInt32(Y.Value) >= Canvas.Size)
             {
                 errors.Add(new CompilingError(location, ErrorCode.Invalid,

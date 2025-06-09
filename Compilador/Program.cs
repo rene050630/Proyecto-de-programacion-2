@@ -31,8 +31,8 @@ public class Program
         var tokens = lexer.GetTokens(codigoFuente, errors);
         Parser parser = new Parser(tokens.ToList(), new TokenStream(tokens), canvas, Context, errors);
         ProgramNode block = parser.ParseProgram();
-        block.Execute();
         block.checksemantic(Context, errors);
+        block.Execute();
         foreach (CompilingError item in errors)
         {
             System.Console.WriteLine($"Argument: {item.Argument}");

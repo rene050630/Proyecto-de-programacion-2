@@ -6,7 +6,7 @@ namespace WindowsFormsApp1
     {
         public Dictionary<string, object> Value = new Dictionary<string, object>();
         private Dictionary<string, ExpressionType> Type = new Dictionary<string, ExpressionType>();
-        public List<string> ValidColors { get; } = new List<string> { "Red", "Blue", "Green", "Yellow", "Orange", "Purple", "Black", "White", "Transparent" };
+        public List<string> ValidColors { get; } = new List<string> { "red", "blue", "green", "yellow", "orange", "purple", "black", "white", "transparent" };
         public bool IsValidColor(string color) => ValidColors.Contains(color);
         public List<string> Labels { get; } = new List<string>();
         private Dictionary<string, int> _labelPositions = new Dictionary<string, int>();

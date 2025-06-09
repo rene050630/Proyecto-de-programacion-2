@@ -24,6 +24,52 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
+            if (!dirX.checksemantic(context, errors) || dirX.Type != ExpressionType.Number)
+            {
+                errors.Add(new CompilingError(
+                    dirX.location,
+                    ErrorCode.Invalid,
+                    "Direction X requires to be a number"
+                ));
+                return false;
+            }
+
+            if (!dirY.checksemantic(context, errors) || dirY.Type != ExpressionType.Number)
+            {
+                errors.Add(new CompilingError(
+                    dirY.location,
+                    ErrorCode.Invalid,
+                    "Direction Y requires to be a number"
+                ));
+                return false;
+            }
+            if (!distance.checksemantic(context, errors) || distance.Type != ExpressionType.Number)
+            {
+                errors.Add(new CompilingError(
+                    distance.location,
+                    ErrorCode.Invalid,
+                    "distance requires to be a number"
+                ));
+                return false;
+            }
+            if (!width.checksemantic(context, errors) || width.Type != ExpressionType.Number)
+            {
+                errors.Add(new CompilingError(
+                    width.location,
+                    ErrorCode.Invalid,
+                    "Width requires to be a number"
+                ));
+                return false;
+            }
+            if (!height.checksemantic(context, errors) || height.Type != ExpressionType.Number)
+            {
+                errors.Add(new CompilingError(
+                    height.location,
+                    ErrorCode.Invalid,
+                    "Height requires to be a number"
+                ));
+                return false;
+            }
             dirX.Evaluate();
             dirY.Evaluate();
             distance.Evaluate();
@@ -36,81 +82,37 @@ namespace WindowsFormsApp1
             int heightInt = Convert.ToInt32(height.Value);
             int centerX = Canvas.ActualX + dirXInt * distanceInt;
             int centerY = Canvas.ActualY + dirYInt * distanceInt;
-            bool isValid = true;
             if (!Canvas.IsWithinCanvas(centerX, centerY, Canvas.Size))
+            {
                 errors.Add(new CompilingError(location, ErrorCode.Invalid, "Center is outside the limits of the canvas"));
-            if (!dirX.checksemantic(context, errors) || dirX.Type != ExpressionType.Number)
-            {
-                errors.Add(new CompilingError(
-                    dirX.location,
-                    ErrorCode.Invalid,
-                    "Direction X requires to be a number"
-                ));
-                isValid = false;
-            }
-
-            if (!dirY.checksemantic(context, errors) || dirY.Type != ExpressionType.Number)
-            {
-                errors.Add(new CompilingError(
-                    dirY.location,
-                    ErrorCode.Invalid,
-                    "Direction Y requires to be a number"
-                ));
-                isValid = false;
-            }
-            if (!distance.checksemantic(context, errors) || distance.Type != ExpressionType.Number)
-            {
-                errors.Add(new CompilingError(
-                    distance.location,
-                    ErrorCode.Invalid,
-                    "distance requires to be a number"
-                ));
-                isValid = false;
-            }
-            if (!width.checksemantic(context, errors) || width.Type != ExpressionType.Number)
-            {
-                errors.Add(new CompilingError(
-                    width.location,
-                    ErrorCode.Invalid,
-                    "Width requires to be a number"
-                ));
-                isValid = false;
-            }
-            if (!height.checksemantic(context, errors) || height.Type != ExpressionType.Number)
-            {
-                errors.Add(new CompilingError(
-                    height.location,
-                    ErrorCode.Invalid,
-                    "Height requires to be a number"
-                ));
-                isValid = false;
+                return false;
             }
             if (dirXInt < -1 || dirXInt > 1)
             {
                 errors.Add(new CompilingError(dirX.location, ErrorCode.Invalid, $"Direction X invalid: {dirXInt}. Allowed values: -1, 0, 1"));
-                isValid = false;
+                return false;
             }
             if (dirYInt < -1 || dirYInt > 1)
             {
                 errors.Add(new CompilingError(dirY.location, ErrorCode.Invalid, $"Direction Y invalid: {dirYInt}. Allowed values: -1, 0, 1"));
-                isValid = false;
+                return false;
             }
             if (distanceInt < 1)
             {
                 errors.Add(new CompilingError(distance.location, ErrorCode.Invalid, $"Invalid distance: {distanceInt}. It requires to be ≥ 1"));
-                isValid = false;
+                return false;
             }
             if (widthInt < 1)
             {
                 errors.Add(new CompilingError(width.location, ErrorCode.Invalid, $"Invalid width: {widthInt}. It requires to be ≥ 1"));
-                isValid = false;
-            }
+                return false;
+            }   
             if (heightInt < 1)
             {
                 errors.Add(new CompilingError(height.location, ErrorCode.Invalid, $"Invalid height: {heightInt}. It requires to be ≥ 1"));
-                isValid = false;
+                return false;
             }
-            return isValid;
+            return true;
         }
         public override void Execute()
         {
