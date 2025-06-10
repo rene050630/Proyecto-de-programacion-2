@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
+using Microsoft.Win32;
 
 namespace WindowsFormsApp1
 {
@@ -13,41 +16,21 @@ namespace WindowsFormsApp1
         {
             this.Name = Name;
             this.value = value;
-            Operator = op;
+            this.Operator = op;
             this.context = context;
         }
         public override void Execute()
         {
-            Name.Evaluate();
-            if (Name is Variable)
-            {
-                if (Operator.value == TokenValues.Assign)
-                {
-                    context.SetValue(Name.ToString(), value.Value);
-                    return;
-                }
-            }
-
+            Console.WriteLine("value :" + value.Value);
+            context.SetValue(Name.ToString(), value.Value);
+            return;
+        
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            Name.Evaluate();
-            Name.checksemantic(context, errors);
-            value.Evaluate();
-            // 1. Validar nombre de variable
-            if (!IsIdentifier(Name.ToString()))
-            {
-                errors.Add(new CompilingError(
-                    location,
-                    ErrorCode.Invalid,
-                    $"Variable name is invalid"
-                ));
-                return false;
-            }
-            // 2. Validar expresión
-            bool ValidExpression = value.checksemantic(context, errors);
-
-            return ValidExpression;
+            value.checksemantic(context, errors);
+            context.SetType(Name.ToString(), value.Type);
+            return true;
         }
 
         private bool IsIdentifier(string nombre)

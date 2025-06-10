@@ -39,25 +39,22 @@ public class Program
             System.Console.WriteLine($"line: {item.Location.Line}");
         }
     }
-//     static void Main(string[] args)
-//     {
-//         var lexer = Compiling.Lexical;
+    // static void Main(string[] args)
+    // {
+    //     var lexer = Compiling.Lexical;
 
-//         // 2. Código de prueba
-//         string testCode = @"Spawn (1, 1)
-
-//  is_brush_color_blue<- 1 
-//         ";
-//         // 3. Procesar el código
-//         var errors = new List<CompilingError>();
-//         var tokens = lexer.GetTokens(testCode, errors);
-//         var stream = new TokenStream(tokens);
-//         foreach (var syy in stream)
-//         {
-//             System.Console.WriteLine(syy.value);
-//             //System.Console.WriteLine(syy.tokenType);
-//         }
-//     }
+    //     // 2. Código de prueba
+    //     string testCode = @"GoTo[loop] (true)";
+    //     // 3. Procesar el código
+    //     var errors = new List<CompilingError>();
+    //     var tokens = lexer.GetTokens(testCode, errors);
+    //     var stream = new TokenStream(tokens);
+    //     foreach (var syy in stream)
+    //     {
+    //         System.Console.WriteLine(syy.value);
+    //         //System.Console.WriteLine(syy.tokenType);
+    //     }
+    // }
 }
     //     var parser = new Parser(tokens.ToList(), stream);
 

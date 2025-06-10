@@ -51,8 +51,8 @@ namespace WindowsFormsApp1
             Expression expression = Comparation();
             while (stream.Match(TokenValues.Equal, TokenValues.NotEqual))
             {
-                Expression right = Comparation();
                 Token Operator = stream.Previous();
+                Expression right = Comparation();
                 if (Operator.value == TokenValues.Equal)
                 {
                     expression = new Equal(stream.Previous().codeLocation, expression, right);
@@ -69,8 +69,9 @@ namespace WindowsFormsApp1
             Expression expression = Term();
             while (stream.Match(TokenValues.Greater, TokenValues.Less, TokenValues.GreaterT, TokenValues.LessT))
             {
-                Expression right = Term();
+                
                 Token Operator = stream.Previous();
+                Expression right = Term();
                 if (Operator.value == TokenValues.Greater)
                 {
                     expression = new Greater(stream.Previous().codeLocation, expression, right);
@@ -95,8 +96,9 @@ namespace WindowsFormsApp1
             Expression expression = Factor();
             while (stream.Match(TokenValues.Add, TokenValues.Sub))
             {
-                Expression right = Factor();
+       
                 Token Operator = stream.Previous();
+                Expression right = Factor();
                 if (Operator.value == TokenValues.Add)
                 {
                     expression = new Add(stream.Previous().codeLocation, expression, right);
@@ -113,8 +115,9 @@ namespace WindowsFormsApp1
             Expression expression = Exponent();
             while (stream.Match(TokenValues.Mul, TokenValues.Div))
             {
-                Expression right = Exponent();
+               
                 Token Operator = stream.Previous();
+                Expression right = Exponent();
                 if (Operator.value == TokenValues.Mul)
                 {
                     expression = new Mult(stream.Previous().codeLocation, expression, right);
@@ -131,8 +134,8 @@ namespace WindowsFormsApp1
             Expression expression = Unary();
             while (stream.Match(TokenValues.Pow, TokenValues.Module))
             {
-                Expression right = Unary();
                 Token Operator = stream.Previous();
+                Expression right = Unary();
                 if (Operator.value == TokenValues.Pow)
                 {
                     expression = new Pow(stream.Previous().codeLocation, expression, right);
@@ -164,7 +167,7 @@ namespace WindowsFormsApp1
             else if (stream.Match(TokenType.Number))
             {
                 Expression left = new Number(Convert.ToInt32(stream.Previous().value), stream.Previous().codeLocation);
-                return ContinueExpression(left);
+                return left;
             }
             else if (stream.Match(TokenValues.OpenBracket))
             {
@@ -174,57 +177,20 @@ namespace WindowsFormsApp1
             }
             else if (stream.Match(TokenType.Identifier))
             {
-                Token variable = stream.Previous();
-                Expression expr = new Variable(stream.Peek().codeLocation, variable.value, context);
-                return ContinueExpression(expr);
+                Console.WriteLine("Encontre el id ", stream.Peek().value);
+                Token variableToken = stream.Previous(); 
+                Console.WriteLine(stream.Previous().value);
+                Expression expr = new Variable(
+                    variableToken.codeLocation,  
+                    variableToken.value,       
+                    context
+                );
+                return expr;
             }
             else
                 throw new CompilingError(stream.Previous().codeLocation, ErrorCode.Expected, "An expression was expected");
         }
 
-        // Nuevo método para continuar construyendo expresiones binarias
-        private Expression ContinueExpression(Expression left)
-        {
-            // Verifica si hay operadores binarios después
-            if (stream.Match(TokenValues.Add) ||
-                stream.Match(TokenValues.Sub) ||
-                stream.Match(TokenValues.Mul) ||
-                stream.Match(TokenValues.Div) ||
-                stream.Match(TokenValues.Pow) ||
-                stream.Match(TokenValues.Module) ||
-                stream.Match(TokenValues.Equal) ||
-                stream.Match(TokenValues.NotEqual) ||
-                stream.Match(TokenValues.Greater) ||
-                stream.Match(TokenValues.Less) ||
-                stream.Match(TokenValues.GreaterT) ||
-                stream.Match(TokenValues.LessT) ||
-                stream.Match(TokenValues.And) ||
-                stream.Match(TokenValues.Or))
-            {
-                Token opToken = stream.Previous();
-                Expression right = expression();  // Parsear la siguiente expresión
-
-                // Crear el nodo binario apropiado
-                switch (opToken.value)
-                {
-                    case TokenValues.Add:
-                        return new Add(opToken.codeLocation, left, right);
-                    case TokenValues.Sub:
-                        return new Subs(opToken.codeLocation, left, right);
-                    case TokenValues.Mul:
-                        return new Mult(opToken.codeLocation, left, right);
-                    case TokenValues.Div:
-                        return new Div(opToken.codeLocation, left, right);
-                    case TokenValues.Module:
-                        return new Module(opToken.codeLocation, left, right);
-                    case TokenValues.Pow:
-                        return new Pow(opToken.codeLocation, left, right);
-                    case TokenValues.OpenBracket:
-                        return new ParenthesizedExpression(opToken.codeLocation, right);
-                }
-            }
-            return left;
-        }
         #endregion
         #region Statement
         public ProgramNode ParseProgram()
@@ -240,19 +206,15 @@ namespace WindowsFormsApp1
                 {
                     statements.Add(ParseStatement());
 
-                    //Manejar EOL después de cada sentencia -MODIFICADO
+                    //Manejar EOL después de cada sentencia
                     if (!stream.Match(TokenType.EOL))
                     {
-                        // Permitir fin de archivo sin EOL
-                        if (!stream.End && !stream.Match(TokenType.End))
-                        {
                             // Solo error si no es el final
                             if (!(stream.Peek().tokenType == TokenType.End))
                             {
                                 throw new CompilingError(stream.Peek().codeLocation, ErrorCode.Expected,
                                     "End of line expected after statement");
                             }
-                        }
                     }
 
                     // Consumir múltiples EOLs
@@ -280,8 +242,6 @@ namespace WindowsFormsApp1
         {
             if (stream.Match(TokenValues.Spawn))
                 return ParseSpawn();
-            else if (stream.LookAhead().tokenType == TokenType.Identifier)
-                return ParseLabel();
             else if (stream.Match(TokenValues.Color))
                 return ParseColor();
             else if (stream.Match(TokenValues.Size))
@@ -310,8 +270,12 @@ namespace WindowsFormsApp1
                 return ParseIsCanvasColor();
             else if (stream.Match(TokenValues.GoTo))
                 return ParseGoto();
-            else if (stream.LookAhead().tokenType == TokenType.Identifier && stream.LookAhead(1).value == TokenValues.Assign)
+            else if (stream.LookAhead().tokenType == TokenType.Identifier)
+            {
+                if(stream.LookAhead(1).value == TokenValues.Assign)
                 return Declaration();
+                else return ParseLabel();
+            }
             throw new CompilingError(stream.LookAhead().codeLocation, ErrorCode.Expected, "Statement unrecognizable");
         }
         public Statement VarDeclaration(Expression expresions, CodeLocation location)
@@ -325,6 +289,7 @@ namespace WindowsFormsApp1
             else if (stream.Match(TokenValues.IsBrushSize)) return ParseIsBrushSize();
             else if (stream.Match(TokenValues.IsCanvasColor)) return ParseIsCanvasColor();
             Expression initializer = expression();
+            Console.WriteLine(initializer.Value);
             return new VariableDec(expresions, initializer, operador, location, context);
         }
         public Statement Declaration()
@@ -333,11 +298,14 @@ namespace WindowsFormsApp1
             if (stream.Match(TokenType.Identifier))
             {
                 stream.MoveNext(-1);
+                Console.WriteLine(stream.Peek().value);
                 CodeLocation loc = stream.Peek().codeLocation;
                 Expression expresions = expression();
-                statement = new ExpressionEvaluator(expresions, expresions.location);
+                //statement = new ExpressionEvaluator(expresions, expresions.location);
                 if (stream.Match(TokenValues.Assign))
                 {
+                    Console.WriteLine(stream.Previous().value);
+                    Console.WriteLine(stream.Peek().value);
                     statement = VarDeclaration(expresions, loc);
                 }
             }
@@ -348,7 +316,7 @@ namespace WindowsFormsApp1
         {
             var location = stream.LookAhead().codeLocation;
             stream.MoveNext(1);
-            return new Label(location, stream.Previous().value);
+            return new Label(location, stream.Previous().value, null, context);
         }
 
         private Fill ParseFill()
@@ -358,7 +326,6 @@ namespace WindowsFormsApp1
             stream.Consume(TokenValues.ClosedBracket, "A ) was expected"); // ')'
             return new Fill(location, Canvas);
         }
-
         private Spawn ParseSpawn()
         {
             Expression x = null;
@@ -458,16 +425,23 @@ namespace WindowsFormsApp1
             Label label = null;
             Expression expr = null;
             var location = stream.LookAhead().codeLocation;
+            Console.WriteLine(stream.LookAhead().value);
             stream.Consume(TokenValues.OpenSquareBracket, "A [ was expected"); // '['
+
             if (stream.Match(TokenType.Identifier))
-                label = new Label(stream.Previous().codeLocation, stream.Previous().value);
+            {
+                label = new Label(stream.Previous().codeLocation, stream.Previous().value, null, context);
+                Console.WriteLine("este es el id " + stream.LookAhead(-1).value);
+            }
+            else
+            {
+                //poner error
+            }   
             stream.Consume(TokenValues.ClosedSquareBracket, "A ] was expected"); // ']'
             stream.Consume(TokenValues.OpenBracket, "A ( was expected");
-
             expr = expression();
-
             stream.Consume(TokenValues.ClosedBracket, "A ) was expected"); // ')'
-            return new GoTo(location, label, expr, context);
+            return new GoTo(location, label, expr);
         }
         private IsCanvasColor ParseIsCanvasColor()
         {

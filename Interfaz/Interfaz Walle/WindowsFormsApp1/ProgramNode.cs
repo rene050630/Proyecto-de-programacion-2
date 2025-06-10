@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,6 +8,7 @@ namespace WindowsFormsApp1
     {
         public List<Statement> Statements { get; }
         public Canvas Canvas { get; }
+        public int position = 0;
 
         public ProgramNode(CodeLocation location, List<Statement> Statements) : base(location)
         {

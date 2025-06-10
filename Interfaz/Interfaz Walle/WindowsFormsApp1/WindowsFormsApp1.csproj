@@ -81,7 +81,7 @@
     <Compile Include="AST\Aritmetics\Module.cs" />
     <Compile Include="AST\Aritmetics\Multiplication.cs" />
     <Compile Include="AST\Comparison\NotEqual.cs" />
-    <Compile Include="AST\Statements\Numbers.cs" />
+    <Compile Include="AST\otherExpression\Numbers.cs" />
     <Compile Include="AST\booleanas\Or.cs" />
     <Compile Include="AST\Aritmetics\Pow.cs" />
     <Compile Include="AST\Statements\Size.cs" />

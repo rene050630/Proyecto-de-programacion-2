@@ -405,9 +405,11 @@ public class Parser
         Label label = null;
         Expression expr = null;
         var location = stream.LookAhead().codeLocation;
+        System.Console.WriteLine(stream.LookAhead().value);
         stream.Consume(TokenValues.OpenSquareBracket, "A [ was expected"); // '['
         if (stream.Match(TokenType.Identifier))
         label = new Label(stream.Previous().codeLocation, stream.Previous().value);
+        System.Console.WriteLine(stream.LookAhead().value);
         stream.Consume(TokenValues.ClosedSquareBracket, "A ] was expected"); // ']'
         stream.Consume(TokenValues.OpenBracket, "A ( was expected");
 

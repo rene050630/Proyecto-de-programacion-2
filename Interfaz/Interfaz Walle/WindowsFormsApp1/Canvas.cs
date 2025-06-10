@@ -49,14 +49,10 @@ namespace WindowsFormsApp1
             ActualX = x;
             ActualY = y;
         }
-        public void IsCanvasColor(Colors color, int vertical, int horizontal)
+        public int IsCanvasColor(Colors color, int vertical, int horizontal)
         {
-            if (IsPositionValid(ActualX + horizontal, ActualY + vertical))
-            {
-                if (GetPixel(ActualX + horizontal, ActualY + vertical) == color) System.Console.WriteLine(1);
-                System.Console.WriteLine(0);
-            }
-            else IsCanvasColor();
+            if (GetPixel(ActualX + horizontal, ActualY + vertical) == color) return 1;
+            else return 0;
         }
         public bool IsCanvasColor()
         {

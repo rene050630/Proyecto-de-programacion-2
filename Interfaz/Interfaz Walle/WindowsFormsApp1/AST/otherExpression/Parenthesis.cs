@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
@@ -5,53 +6,50 @@ namespace WindowsFormsApp1
 {
     public class ParenthesizedExpression : Expression
     {
-        public Expression InnerExpression { get; }
-
-        public ParenthesizedExpression(CodeLocation location, Expression inner)
-            : base(location)
+        public Expression expression { get; private set; }
+        public ParenthesizedExpression(CodeLocation location, Expression exp) : base(location)
         {
-            InnerExpression = inner;
+            this.expression = exp;
         }
-
+        public override void Evaluate()
+        {
+            expression.Evaluate();
+            this.Value = expression.Value;
+        }
+        public override object Value { get; set; }
+        public override ExpressionType Type { get; set; }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            bool group = InnerExpression.checksemantic(context, errors);
-            if (InnerExpression.Type == ExpressionType.Number)
+            bool isValid = expression.checksemantic(context, errors);
+            if (expression.Type == ExpressionType.Number)
             {
-                InnerExpression.Type = ExpressionType.Number;
-                return group;
+                this.Type = ExpressionType.Number;
+                return isValid;
             }
-            else if (InnerExpression.Type == ExpressionType.Text)
+            else if (expression.Type == ExpressionType.Text)
             {
-                InnerExpression.Type = ExpressionType.Text;
-                return group;
+                this.Type = ExpressionType.Text;
+                return isValid;
             }
-            else if (InnerExpression.Type == ExpressionType.Boolean)
+            else if (expression.Type == ExpressionType.Boolean)
             {
-                InnerExpression.Type = ExpressionType.Boolean;
-                return group;
+                this.Type = ExpressionType.Boolean;
+                return isValid;
             }
             else
             {
-                errors.Add(new CompilingError(location, ErrorCode.Invalid, "Expresion invalida"));
+                errors.Add(new CompilingError(location, ErrorCode.Invalid, "Invalid Expression"));
+                this.Type = ExpressionType.ErrorType;
                 return false;
             }
         }
-
-        public override void Evaluate()
+        public override string ToString()
         {
-            InnerExpression.Evaluate();
-            Value = InnerExpression.Value;
+            if (Value == null)
+            {
+                return String.Format("({0})", expression);
+            }
+            return Value.ToString();
         }
-        //public override string ToString()
-        //{
-        //    if (Value == null)
-        //    {
-        //        return string.Format("({0})", InnerExpression);
-        //    }
-        //    return Value.ToString();
-        //}
-        public override ExpressionType Type { get; set; }
-        public override object Value { get; set; }
     }
 }

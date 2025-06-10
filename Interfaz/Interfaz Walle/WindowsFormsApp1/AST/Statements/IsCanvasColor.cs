@@ -56,7 +56,14 @@ namespace WindowsFormsApp1
         }
         public override void Execute()
         {
-            Canvas.IsCanvasColor(Colors.Red, (int)vertical.Value, (int)horizontal.Value);
+            color.Evaluate();
+            vertical.Evaluate();
+            horizontal.Evaluate();
+            int horizontalInt = Convert.ToInt32(horizontal.Value);
+            int verticalInt = Convert.ToInt32(vertical.Value);
+            if (Canvas.IsPositionValid(Canvas.ActualX + horizontalInt, Canvas.ActualY + verticalInt))
+                Canvas.IsCanvasColor(Colors.Red, verticalInt, horizontalInt);
+            else Canvas.IsCanvasColor();
         }
     }
 }

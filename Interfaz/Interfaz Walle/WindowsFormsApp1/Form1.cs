@@ -17,7 +17,7 @@ namespace WindowsFormsApp1
     public partial class Form1 : Form
     {
         private Canvas drawingCanvas;
-        private int pixelSize = 12;
+        private int pixelSize = 10;
         public Form1()
         {
             InitializeComponent();
@@ -222,7 +222,7 @@ namespace WindowsFormsApp1
 
         private void pnlLineNumbers_Paint(object sender, PaintEventArgs e)
         {
-            using (var brush = new SolidBrush(Color.DimGray))
+            using (var brush = new SolidBrush(Color.Black))
             {
                 int lineHeight = TextEditor.Font.Height;
                 int firstIndex = TextEditor.GetCharIndexFromPosition(Point.Empty);

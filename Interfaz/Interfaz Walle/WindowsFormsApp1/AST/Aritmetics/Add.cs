@@ -25,7 +25,7 @@ namespace WindowsFormsApp1
             bool left = Left.checksemantic(context, errors);
             if (Right.Type != ExpressionType.Number || Left.Type != ExpressionType.Number)
             {
-                errors.Add(new CompilingError(location, ErrorCode.Invalid, "We don't do that here... "));
+                errors.Add(new CompilingError(location, ErrorCode.Invalid, "Operation + requires number operands"));
                 Type = ExpressionType.ErrorType;
                 return false;
             }
@@ -33,13 +33,13 @@ namespace WindowsFormsApp1
             Type = ExpressionType.Number;
             return right && left;
         }
-        //public override string ToString()
-        //{
-        //    if (Value == null)
-        //    {
-        //        return string.Format("({0} + {1})", Left, Right);
-        //    }
-        //    return Value.ToString();
-        //}
+        public override string ToString()
+        {
+            if (Value == null)
+            {
+                return string.Format("({0} + {1})", Left, Right);
+            }
+            return Value.ToString();
+        }
     }
 }

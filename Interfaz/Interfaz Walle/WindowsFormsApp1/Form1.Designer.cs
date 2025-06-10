@@ -168,7 +168,7 @@ namespace WindowsFormsApp1
             this.richTextBox1.Location = new System.Drawing.Point(841, 580);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(607, 91);
+            this.richTextBox1.Size = new System.Drawing.Size(607, 120);
             this.richTextBox1.TabIndex = 11;
             this.richTextBox1.Text = "";
             // 
@@ -176,7 +176,7 @@ namespace WindowsFormsApp1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1628, 685);
+            this.ClientSize = new System.Drawing.Size(1628, 761);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.ResizeButton);

@@ -1,4 +1,5 @@
 //Error en GetType
+using System;
 using System.Collections.Generic;
 
 namespace WindowsFormsApp1
@@ -16,25 +17,27 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            if (context.GetValue(variable) == null)
+            foreach(var x in context.Type)
             {
-                context.SetType(variable, ExpressionType.Text);
-            }
-            else
-            {
-                errors.Add(new CompilingError(location, ErrorCode.Invalid, "Variable is already defined"));
-                return false;
+                Console.WriteLine(x.Key);
             }
             if (context.GetType(variable) == ExpressionType.ErrorType)
             {
                 errors.Add(new CompilingError(location, ErrorCode.UndefinedLabel, "Variable is undefined"));
+                Type = ExpressionType.ErrorType;
                 return false;
             }
-            else return true;
+            Type = context.GetType(variable);
+            return true;
         }
         public override void Evaluate()
         {
-            Value = context.Execute(variable);
+            this.Value = context.Execute(variable);
+            Console.WriteLine("entra aqui " + Value);
+        }
+        public override string ToString()
+        {
+            return String.Format("{0}", variable);
         }
     }
 }

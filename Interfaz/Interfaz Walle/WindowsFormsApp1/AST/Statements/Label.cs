@@ -1,14 +1,23 @@
 
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Runtime.Remoting.Contexts;
 
 namespace WindowsFormsApp1
 {
     public class Label : Statement
     {
         public string Name;
-        public Label(CodeLocation location, string name) : base(location)
+        public ProgramNode programNode;
+        public Context Context;
+        public int position;
+        public Label(CodeLocation location, string name, ProgramNode programNode, Context context) : base(location)
         {
             Name = name;
+            this.programNode = programNode;
+            Context = context;
+            context.RegisterLabel(Name, location.Line);
+            context.Labels.Add(Name);
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
@@ -21,18 +30,16 @@ namespace WindowsFormsApp1
                 ));
                 return false;
             }
-            if (context.LabelExists(Name)) 
-            {
-                errors.Add(new CompilingError(location, ErrorCode.Invalid, $"Label '{Name}' already defined"));
-                return false;
-            }
-            context.RegisterLabel(Name, location.Line);
-            context.Labels.Add(Name);
+            //if (context.LabelExists(Name)) 
+            //{
+            //    errors.Add(new CompilingError(location, ErrorCode.Invalid, $"Label '{Name}' already defined"));
+            //    return false;
+            //}
             return true;
         }
         public override void Execute()
         {
-
+          
         }
         public override string ToString()
         {
