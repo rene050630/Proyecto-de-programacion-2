@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace WindowsFormsApp1
@@ -17,7 +18,7 @@ namespace WindowsFormsApp1
             Left.Evaluate();
             if (Right.Type == ExpressionType.Number && Left.Type == ExpressionType.Number)
             {
-                this.Value = (double)this.Left.Value != (double)this.Right.Value;
+                this.Value = Convert.ToInt32(this.Left.Value) != Convert.ToInt32(this.Right.Value);
             }
             else if (Right.Type == ExpressionType.Boolean && Left.Type == ExpressionType.Boolean)
             {

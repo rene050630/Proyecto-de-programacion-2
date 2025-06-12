@@ -9,12 +9,14 @@ namespace WindowsFormsApp1
         Expression dirY;
         Expression radius;
         Canvas Canvas;
-        public DrawCircle(CodeLocation location, Expression dirX, Expression dirY, Expression radius, Canvas canvas) : base(location)
+        List<CompilingError> errors;
+        public DrawCircle(CodeLocation location, Expression dirX, Expression dirY, Expression radius, Canvas canvas, List<CompilingError> errors) : base(location)
         {
             this.dirX = dirX;
             this.dirY = dirY;
             this.radius = radius;
             Canvas = canvas;
+            this.errors = errors;
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
@@ -46,34 +48,7 @@ namespace WindowsFormsApp1
                 ));
                 return false;
             }
-            dirX.Evaluate();
-            dirY.Evaluate();
-            radius.Evaluate();
-            int dirXInt = Convert.ToInt32(dirX.Value);
-            int dirYInt = Convert.ToInt32(dirY.Value);
-            int radiusInt = Convert.ToInt32(radius.Value);
-            int centerX = Canvas.ActualX + dirXInt * radiusInt;
-            int centerY = Canvas.ActualY + dirYInt * radiusInt;
-            if (dirXInt < -1 || dirXInt > 1)
-            {
-                errors.Add(new CompilingError(dirX.location, ErrorCode.Invalid, $"Direction X invalid: {dirXInt}. Allowed values: -1, 0, 1"));
-                return false;
-            }
-            if (dirYInt < -1 || dirYInt > 1)
-            {
-                errors.Add(new CompilingError(dirY.location, ErrorCode.Invalid, $"Direction Y invalid: {dirYInt}. Allowed values: -1, 0, 1"));
-                return false;
-            }
-            if (radiusInt < 1)
-            {
-                errors.Add(new CompilingError(radius.location, ErrorCode.Invalid, $"Invalid radius: {radiusInt}. It requires to be ≥ 1"));
-                return false;
-            }
-            if (!Canvas.IsWithinCanvas(centerX, centerY, Canvas.Size))
-            {
-                errors.Add(new CompilingError(location, ErrorCode.Invalid, "Center is outside the limits of the canvas"));
-                return false;
-            }
+            
             return true;
         }
         public override void Execute()
@@ -83,6 +58,29 @@ namespace WindowsFormsApp1
             radius.Evaluate();
             int centerX = Canvas.ActualX + Convert.ToInt32(dirX.Value) * Convert.ToInt32(radius.Value);
             int centerY = Canvas.ActualY + Convert.ToInt32(dirY.Value) * Convert.ToInt32(radius.Value);
+            int dirXInt = Convert.ToInt32(dirX.Value);
+            int dirYInt = Convert.ToInt32(dirY.Value);
+            int radiusInt = Convert.ToInt32(radius.Value);
+            if (dirXInt < -1 || dirXInt > 1)
+            {
+                errors.Add(new CompilingError(dirX.location, ErrorCode.Invalid, $"Direction X invalid: {dirXInt}. Allowed values: -1, 0, 1"));
+                return;
+            }
+            if (dirYInt < -1 || dirYInt > 1)
+            {
+                errors.Add(new CompilingError(dirY.location, ErrorCode.Invalid, $"Direction Y invalid: {dirYInt}. Allowed values: -1, 0, 1"));
+                return;
+            }
+            if (radiusInt < 1)
+            {
+                errors.Add(new CompilingError(radius.location, ErrorCode.Invalid, $"Invalid radius: {radiusInt}. It requires to be ≥ 1"));
+                return;
+            }
+            if (!Canvas.IsWithinCanvas(centerX, centerY, Canvas.Size))
+            {
+                errors.Add(new CompilingError(location, ErrorCode.Invalid, "Center is outside the limits of the canvas"));
+                return;
+            }
             Canvas.DrawMidpointCircle(centerX,centerY, Convert.ToInt32(radius.Value));
             Canvas.ActualX = centerX;
             Canvas.ActualY = centerY;

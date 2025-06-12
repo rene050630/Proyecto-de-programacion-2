@@ -3,10 +3,16 @@ using System.Collections.Generic;
 
 namespace WindowsFormsApp1
 {  
-    public class IsBrushColor : Statement
+    public class IsBrushColor : Expression
     {
         Expression color;
         Canvas Canvas;
+        public override object Value { get; set; }
+        public override ExpressionType Type
+        {
+            get { return ExpressionType.Number; }
+            set { }
+        }
         public IsBrushColor(CodeLocation location, Expression color, Canvas canvas) : base(location)
         {
             Canvas = canvas;
@@ -19,22 +25,23 @@ namespace WindowsFormsApp1
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "color requires to be a string"));
                 return false;
             }
-
-            if (color.Value is string stringLiteral &&
-                !context.IsValidColor(stringLiteral))
+            string colorValue = color.Value.ToString().ToLower();
+            if (!context.IsValidColor(colorValue))
             {
-                errors.Add(new CompilingError(color.location, ErrorCode.Invalid,
-                    $"Color '{stringLiteral}' is invalid. Allowed colors: {string.Join(", ", context.ValidColors)}"
+                errors.Add(new CompilingError(
+                    color.location,
+                    ErrorCode.Invalid,
+                    $"Color '{colorValue}' is invalid. Allowed colors: {string.Join(", ", context.ValidColors)}"
                 ));
                 return false;
             }
             return true;
         }
-        public override void Execute()
+        public override void Evaluate()
         {
             color.Evaluate();
             string colorValue = (string)color.Value;
-            Canvas.IsBrushColor(GetColor(colorValue));
+            Value = Canvas.IsBrushColor(GetColor(colorValue));
         }
         public Colors GetColor(string colorValue)
         {

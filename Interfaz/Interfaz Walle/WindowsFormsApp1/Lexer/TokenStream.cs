@@ -14,7 +14,10 @@ namespace WindowsFormsApp1
             this.tokens = new List<Token>(tokens);
             position = 0;
         }
-
+        public void Reset()
+        {
+            position = 0;
+        }
         public bool End => position >= tokens.Count - 1;
         public bool Match(params string[] values)
         {

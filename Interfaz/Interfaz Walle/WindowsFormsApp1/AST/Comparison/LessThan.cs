@@ -17,7 +17,7 @@ namespace WindowsFormsApp1
             Right.Evaluate();
             Left.Evaluate();
 
-            Value = Convert.ToInt32(Right.Value) <= Convert.ToInt32(Left.Value);
+            Value = Convert.ToInt32(Left.Value) <= Convert.ToInt32(Right.Value);
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {

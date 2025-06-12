@@ -22,6 +22,11 @@ namespace WindowsFormsApp1
                 return false;
             }
             color.Evaluate();
+            if(color.Value == null)
+            {
+                errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "Colors cannot be null"));
+                return false;
+            }
             string colorValue = color.Value.ToString().ToLower();
             if(!context.IsValidColor(colorValue))
             {
@@ -38,7 +43,6 @@ namespace WindowsFormsApp1
         {
             color.Evaluate();
             string colorValue = (string)color.Value;
-            // Actualizar el color del pincel
             switch (colorValue.ToLower())
             {
                 case "red": Canvas.BrushColor = Colors.Red; break;

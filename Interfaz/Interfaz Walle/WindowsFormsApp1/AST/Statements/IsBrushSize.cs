@@ -4,10 +4,16 @@ using System.Linq.Expressions;
 
 namespace WindowsFormsApp1
 {
-    public class IsBrushSize : Statement
+    public class IsBrushSize : Expression
     {
         Expression size;
         Canvas Canvas;
+        public override object Value { get; set; }
+        public override ExpressionType Type
+        {
+            get { return ExpressionType.Number; }
+            set { }
+        }
         public IsBrushSize(CodeLocation location, Expression size, Canvas canvas) : base(location)
         {
             this.size = size;
@@ -23,10 +29,10 @@ namespace WindowsFormsApp1
             }
             return isValid;
         }
-        public override void Execute()
+        public override void Evaluate()
         {
             size.Evaluate();
-            Canvas.IsBrushSize(Convert.ToInt32(size.Value));
+            Value = Canvas.IsBrushSize(Convert.ToInt32(size.Value));
         }
     }
 }

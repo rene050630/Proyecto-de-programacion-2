@@ -3,9 +3,15 @@ using System.Collections.Generic;
 
 namespace WindowsFormsApp1
 {
-    public class GetActualX : Statement
+    public class GetActualX : Expression
     {
         Canvas Canvas;
+        public override object Value { get; set; }
+        public override ExpressionType Type
+        {
+            get { return ExpressionType.Number; }
+            set { }
+        }
         public GetActualX(CodeLocation location, Canvas canvas) : base(location)
         {
             Canvas = canvas;
@@ -14,9 +20,9 @@ namespace WindowsFormsApp1
         {
             return true;
         }
-        public override void Execute()
+        public override void Evaluate()
         {
-            Canvas.GetActualX();
+            Value = Canvas.GetActualX();
         }
     }
 }

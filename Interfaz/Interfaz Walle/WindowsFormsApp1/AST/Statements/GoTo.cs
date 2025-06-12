@@ -1,21 +1,27 @@
+using System;
 using System.Collections.Generic;
 
 namespace WindowsFormsApp1
 {
     public class GoTo : Statement
     {
-        public Label Label { get; }
+        public string Label { get; }
         public Expression Condition { get; }
-        public GoTo(CodeLocation location, Label label, Expression condition) : base(location)
+        public GoTo(CodeLocation location, string label, Expression condition) : base(location)
         {
             Label = label;
             Condition = condition;
         }
+        public bool ShouldJump()
+        {
+            Condition.Evaluate();
+            return (bool)Condition.Value;
+        }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            if (!context.LabelExists(Label.Name))
+            if (!context.LabelExists(Label))
             {
-                errors.Add(new CompilingError(location, ErrorCode.UndefinedLabel, $"Label '{Label.Name}' undefined"));
+                errors.Add(new CompilingError(location, ErrorCode.UndefinedLabel, $"Label '{Label}' undefined"));
                 return false;
             }
             if (!Condition.checksemantic(context, errors) ||
@@ -28,11 +34,7 @@ namespace WindowsFormsApp1
         }
         public override void Execute()
         {
-            Condition.Evaluate();
-            if (Condition is Bool condition && (bool)condition.Value)
-            {
-                
-            }
+        
 
         }
     }

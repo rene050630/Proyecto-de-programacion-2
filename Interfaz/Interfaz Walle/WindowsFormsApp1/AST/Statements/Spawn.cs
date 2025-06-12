@@ -20,29 +20,28 @@ namespace WindowsFormsApp1
             if (!X.checksemantic(context, errors) || X.Type != ExpressionType.Number)
             {
                 errors.Add(new CompilingError(X.location, ErrorCode.Invalid,
-                    "Coordenada X debe ser numérica"));
+                    "X coordenate must be numeric"));
                 return false;
             }
 
             if (!Y.checksemantic(context, errors) || Y.Type != ExpressionType.Number)
             {
                 errors.Add(new CompilingError(Y.location, ErrorCode.Invalid,
-                    "Coordenada Y debe ser numérica"));
+                    "Y coordenate must be numeric"));
                 return false;
             }
             X.Evaluate();
             Y.Evaluate();
+            //if (Canvas.IsSpawnCalled)
+            //{
+            //    errors.Add(new CompilingError(location, ErrorCode.Invalid,
+            //        "Spawn can only be called once"));
+            //    return false;
+            //}
             if (Convert.ToInt32(X.Value) < 0 || Convert.ToInt32(X.Value) >= Canvas.Size || Convert.ToInt32(Y.Value) < 0 || Convert.ToInt32(Y.Value) >= Canvas.Size)
             {
                 errors.Add(new CompilingError(location, ErrorCode.Invalid,
-                    $"Posición inválida ({X}, {Y}) para canvas de tamaño {Canvas.Size}"));
-                return false;
-            }
-            // 2. Validar que Spawn no se haya llamado antes (si aplica)
-            if (Canvas.IsSpawnCalled)
-            {
-                errors.Add(new CompilingError(location, ErrorCode.Invalid,
-                    "Spawn solo puede llamarse una vez"));
+                    $"Invalid position ({X}, {Y}) for a {Canvas.Size}-sized canvas"));
                 return false;
             }
             Canvas.IsSpawnCalled = true;
@@ -52,9 +51,7 @@ namespace WindowsFormsApp1
         {
             X.Evaluate();
             Y.Evaluate();
-            // Actualizar estado
             Canvas.Spawn(Convert.ToInt32(X.Value), Convert.ToInt32(Y.Value));
-            //Canvas.IsSpawnCalled = true; // Marcar como invocado
         }
     }
 }

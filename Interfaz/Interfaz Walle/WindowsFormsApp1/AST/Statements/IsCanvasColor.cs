@@ -1,21 +1,24 @@
 
 using System.Collections.Generic;
 using System;
-//Arreglar lo de los colores
 namespace WindowsFormsApp1
 {
-    public class IsCanvasColor : Statement
+    public class IsCanvasColor : Expression
     {
         Expression color;
         Expression horizontal;
         Expression vertical;
         Canvas Canvas;
-        public IsCanvasColor(CodeLocation location, Expression color, Expression vertical, Expression horizontal, Canvas canvas) : base(location)
+        List <CompilingError> errors;
+        public override object Value { get; set; }
+        public override ExpressionType Type { get; set; }
+        public IsCanvasColor(CodeLocation location, Expression color, Expression vertical, Expression horizontal, Canvas canvas, List<CompilingError> errors) : base(location)
         {
             this.color = color;
             this.horizontal = horizontal;
             this.vertical = vertical;
             Canvas = canvas;
+            this.errors = errors;
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
@@ -35,15 +38,6 @@ namespace WindowsFormsApp1
                 return false;
             }
             color.Evaluate();
-            vertical.Evaluate();
-            horizontal.Evaluate();
-            int X = Convert.ToInt32(vertical.Value);
-            int Y = Convert.ToInt32(horizontal.Value);
-            if (X + Canvas.ActualX < 0 || X + Canvas.ActualX >= Canvas.Size || Y + Canvas.ActualY < 0 || Y + Canvas.ActualY >= Canvas.Size)
-            {
-                errors.Add(new CompilingError(location, ErrorCode.Invalid, "La casilla tiene que estar dentro de las dimensiones del canvas"));
-                return false;
-            }
             if (color.Value is string stringLiteral &&
                 !context.IsValidColor(stringLiteral))
             {
@@ -52,18 +46,50 @@ namespace WindowsFormsApp1
                 ));
                 return false;
             }
+            color.Evaluate();
+            vertical.Evaluate();
+            horizontal.Evaluate();
+            int horizontalInt = Convert.ToInt32(horizontal.Value);
+            int verticalInt = Convert.ToInt32(vertical.Value);
+            if (horizontalInt + Canvas.ActualX < 0 || horizontalInt + Canvas.ActualX >= Canvas.Size || verticalInt + Canvas.ActualY < 0 || verticalInt + Canvas.ActualY >= Canvas.Size)
+            {
+                Type = ExpressionType.Boolean;
+                return true;
+            }
+            Type = ExpressionType.Number;
             return true;
         }
-        public override void Execute()
+        public override void Evaluate()
         {
             color.Evaluate();
             vertical.Evaluate();
             horizontal.Evaluate();
             int horizontalInt = Convert.ToInt32(horizontal.Value);
             int verticalInt = Convert.ToInt32(vertical.Value);
+            Colors colorValue = Color();
             if (Canvas.IsPositionValid(Canvas.ActualX + horizontalInt, Canvas.ActualY + verticalInt))
-                Canvas.IsCanvasColor(Colors.Red, verticalInt, horizontalInt);
-            else Canvas.IsCanvasColor();
+                Value = Canvas.IsCanvasColor(colorValue, verticalInt, horizontalInt);
+            else
+            {
+                Value = Canvas.IsCanvasColor();
+            }
+        }
+        private Colors Color()
+        {
+            string colorValue = (string)color.Value;
+            switch (colorValue.ToLower())
+            {
+                case "red": return Colors.Red;
+                case "blue": return Colors.Blue;
+                case "green": return Colors.Green;
+                case "yellow": return Colors.Yellow;
+                case "black": return Colors.Black;
+                case "white": return Colors.White;
+                case "orange": return Colors.Orange;
+                case "purple": return Colors.Purple;
+                case "transparent": return Colors.Transparent;
+                default: return Colors.White;
+            }
         }
     }
 }

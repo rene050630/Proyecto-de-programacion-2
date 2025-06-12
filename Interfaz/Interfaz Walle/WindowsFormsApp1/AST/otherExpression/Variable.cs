@@ -17,10 +17,6 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            foreach(var x in context.Type)
-            {
-                Console.WriteLine(x.Key);
-            }
             if (context.GetType(variable) == ExpressionType.ErrorType)
             {
                 errors.Add(new CompilingError(location, ErrorCode.UndefinedLabel, "Variable is undefined"));
@@ -33,7 +29,6 @@ namespace WindowsFormsApp1
         public override void Evaluate()
         {
             this.Value = context.Execute(variable);
-            Console.WriteLine("entra aqui " + Value);
         }
         public override string ToString()
         {

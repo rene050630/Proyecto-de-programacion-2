@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Runtime.Remoting.Contexts;
 namespace WindowsFormsApp1
 {
-    public class GetColorCount : Statement
+    public class GetColorCount : Expression
     {
         Canvas Canvas;
         Expression color;
@@ -13,8 +14,15 @@ namespace WindowsFormsApp1
         Expression y1;
         Expression x2;
         Expression y2;
+        List<CompilingError> errors;
+        public override object Value { get; set; }
+        public override ExpressionType Type
+        {
+            get { return ExpressionType.Number; }
+            set { }
+        }
         public GetColorCount(CodeLocation location, Canvas canvas, Expression color, Expression x1, Expression y1,
-        Expression x2, Expression y2) : base(location)
+        Expression x2, Expression y2, List<CompilingError> errors) : base(location)
         {
             Canvas = canvas;
             this.color = color;
@@ -22,6 +30,7 @@ namespace WindowsFormsApp1
             this.x2 = x2;
             this.y1 = y1;
             this.y2 = y2;
+            this.errors = errors;
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
@@ -50,46 +59,17 @@ namespace WindowsFormsApp1
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "color requires to be a string"));
                 return false;
             }
-            x1.Evaluate();
-            x2.Evaluate();
-            y1.Evaluate();
-            y2.Evaluate();
             color.Evaluate();
-            int X1 = Convert.ToInt32(x1.Value);
-            int X2 = Convert.ToInt32(x2.Value);
-            int Y1 = Convert.ToInt32(y1.Value);
-            int Y2 = Convert.ToInt32(y2.Value);
             if (color.Value is string stringLiteral &&
                 !context.IsValidColor(stringLiteral))
             {
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid,
                     $"Color '{stringLiteral}' is invalid. Allowed colors: {string.Join(", ", context.ValidColors)}"
                 ));
-                return false;
-            }
-            if (X1 < 0)
-            {
-                errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "x1 requires to be >= 0"));
-                return false;
-            }
-            if (Y1 < 0)
-            {
-                errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "y1 requires to be >= 0"));
-                return false;
-            }
-            if (X2 < 0)
-            {
-                errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "x2 requires to be >= 0"));
-                return false;
-            }
-            if (Y2 < 0)
-            {
-                errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "y2 requires to be >= 0"));
-                return false;
             }
             return true;
         }
-        public override void Execute()
+        public override void Evaluate()
         {
             x1.Evaluate();
             x2.Evaluate();
@@ -100,8 +80,28 @@ namespace WindowsFormsApp1
             int X2 = Convert.ToInt32(x2.Value);
             int Y1 = Convert.ToInt32(y1.Value);
             int Y2 = Convert.ToInt32(y2.Value);
+            if (X1 < 0)
+            {
+                errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "x1 requires to be >= 0"));
+                return;
+            }
+            if (Y1 < 0)
+            {
+                errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "y1 requires to be >= 0"));
+                return;
+            }
+            if (X2 < 0)
+            {
+                errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "x2 requires to be >= 0"));
+                return;
+            }
+            if (Y2 < 0)
+            {
+                errors.Add(new CompilingError(x1.location, ErrorCode.Invalid, "y2 requires to be >= 0"));
+                return;
+            }
             Colors colorValue = Color();
-            Canvas.GetColorCount(X1, X2, Y1, Y2, colorValue);
+            Value = Canvas.GetColorCount(X1, X2, Y1, Y2, colorValue);
         }
         public Colors Color()
         {

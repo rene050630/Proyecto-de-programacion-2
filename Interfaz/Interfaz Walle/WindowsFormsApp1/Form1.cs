@@ -41,7 +41,7 @@ namespace WindowsFormsApp1
         {
             picCanvas.SizeMode = PictureBoxSizeMode.Normal;
             picCanvas.Paint += PicCanvas_Paint;
-            picCanvas.MouseDown += PicCanvas_MouseDown;
+            //picCanvas.MouseDown += PicCanvas_MouseDown;
             UpdatePictureBoxSize();
         }
 
@@ -55,20 +55,20 @@ namespace WindowsFormsApp1
             picCanvas.Invalidate();
         }
 
-        private void PicCanvas_MouseDown(object sender, MouseEventArgs e)
-        {
-            int canvasX = e.X / pixelSize;
-            int canvasY = e.Y / pixelSize;
+        //private void PicCanvas_MouseDown(object sender, MouseEventArgs e)
+        //{
+        //    int canvasX = e.X / pixelSize;
+        //    int canvasY = e.Y / pixelSize;
 
-            if (canvasX >= 0 && canvasX < drawingCanvas.Size &&
-                canvasY >= 0 && canvasY < drawingCanvas.Size)
-            {
-                drawingCanvas.ActualX = canvasX;
-                drawingCanvas.ActualY = canvasY;
-                drawingCanvas.board[canvasX, canvasY] = drawingCanvas.BrushColor;
-                picCanvas.Invalidate();
-            }
-        }
+        //    if (canvasX >= 0 && canvasX < drawingCanvas.Size &&
+        //        canvasY >= 0 && canvasY < drawingCanvas.Size)
+        //    {
+        //        drawingCanvas.ActualX = canvasX;
+        //        drawingCanvas.ActualY = canvasY;
+        //        drawingCanvas.board[canvasX, canvasY] = drawingCanvas.BrushColor;
+        //        picCanvas.Invalidate();
+        //    }
+        //}
         private void DrawWallEPositionIndicator(Graphics g)
         {
             if (drawingCanvas == null) return;
@@ -185,15 +185,11 @@ namespace WindowsFormsApp1
         {
             richTextBox1.Text = string.Empty;
             string codigoFuente = TextEditor.Text;
-
-            // Crea un NUEVO contexto y lista de errores en cada ejecución
             Context context = new Context();
             List<CompilingError> errors = new List<CompilingError>();
 
             var lexer = Compiling.Lexical;
             var tokens = lexer.GetTokens(codigoFuente, errors);
-
-            // Crea un NUEVO parser con los nuevos tokens y contexto
             Parser parser = new Parser(
                 tokens.ToList(),
                 new TokenStream(tokens),
@@ -208,6 +204,10 @@ namespace WindowsFormsApp1
             if (errors.Count == 0)
             {
                 block.Execute();
+                foreach (CompilingError item in errors)
+                {
+                    richTextBox1.Text += item.ToString() + "\n";
+                }
             }
             else
             {

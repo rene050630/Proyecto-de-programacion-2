@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System;
 using System.Linq;
+using System.Data.Common;
 
 namespace WindowsFormsApp1
 {
@@ -73,6 +74,7 @@ namespace WindowsFormsApp1
                 if (stream.Match("\n"))
                 {
                     tokens.Add(new Token(TokenType.EOL, TokenValues.StatementSeparator, stream.Location));
+                    stream.line ++;
                     continue;
                 }
                 string value;
@@ -117,7 +119,7 @@ namespace WindowsFormsApp1
         {
             string code;
             int pos;
-            int line;
+            public int line;
 
             public TokenReader(string code)
             {
@@ -258,6 +260,7 @@ namespace WindowsFormsApp1
                 }
                 return this.code[this.pos++];
             }
+
         }
 
     }

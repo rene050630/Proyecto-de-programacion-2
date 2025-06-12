@@ -2,9 +2,15 @@ using System.Collections.Generic;
 
 namespace WindowsFormsApp1
 {
-    public class GetActualY : Statement
+    public class GetActualY : Expression
     {
         Canvas Canvas;
+        public override object Value { get; set; }
+        public override ExpressionType Type
+        {
+            get { return ExpressionType.Number; }
+            set { }
+        }
         public GetActualY(CodeLocation location, Canvas canvas) : base(location)
         {
             Canvas = canvas;
@@ -13,9 +19,9 @@ namespace WindowsFormsApp1
         {
             return true;
         }
-        public override void Execute()
+        public override void Evaluate()
         {
-            Canvas.GetActualY();
+            Value = Canvas.GetActualY();
         }
     }
 }

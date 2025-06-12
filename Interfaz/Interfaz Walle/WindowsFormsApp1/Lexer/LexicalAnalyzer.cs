@@ -21,7 +21,6 @@ namespace WindowsFormsApp1
                     __LexicalProcess.RegisterOperator("%", TokenValues.Module);
 
                     __LexicalProcess.RegisterOperator(",", TokenValues.Comma);
-                    //__LexicalProcess.RegisterOperator("\n", TokenValues.StatementSeparator);
                     __LexicalProcess.RegisterOperator("(", TokenValues.OpenBracket);
                     __LexicalProcess.RegisterOperator(")", TokenValues.ClosedBracket);
                     __LexicalProcess.RegisterOperator("[", TokenValues.OpenSquareBracket);
