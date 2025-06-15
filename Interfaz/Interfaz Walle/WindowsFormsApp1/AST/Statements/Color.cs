@@ -22,7 +22,7 @@ namespace WindowsFormsApp1
                 return false;
             }
             color.Evaluate();
-            if(color.Value == null)
+            if (color.Value == null)
             {
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "Colors cannot be null"));
                 return false;
@@ -58,7 +58,7 @@ namespace WindowsFormsApp1
             }
             ConvertCanvasColor(Canvas.BrushColor);
         }
-        public Color ConvertCanvasColor(Colors canvasColor)
+        private Color ConvertCanvasColor(Colors canvasColor)
         {
             switch (canvasColor)
             {

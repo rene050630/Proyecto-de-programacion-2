@@ -25,6 +25,12 @@ namespace WindowsFormsApp1
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "color requires to be a string"));
                 return false;
             }
+            color.Evaluate();
+            if (color.Value == null)
+            {
+                errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "Colors cannot be null"));
+                return false;
+            }
             string colorValue = color.Value.ToString().ToLower();
             if (!context.IsValidColor(colorValue))
             {
@@ -43,7 +49,7 @@ namespace WindowsFormsApp1
             string colorValue = (string)color.Value;
             Value = Canvas.IsBrushColor(GetColor(colorValue));
         }
-        public Colors GetColor(string colorValue)
+        private Colors GetColor(string colorValue)
         {
             switch (colorValue.ToLower())
             {

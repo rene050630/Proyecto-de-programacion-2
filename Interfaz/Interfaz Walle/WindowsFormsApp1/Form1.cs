@@ -39,9 +39,10 @@ namespace WindowsFormsApp1
 
         private void SetupPictureBox()
         {
+            btnReset.Click += btnReset_Click;
+            TextEditor.VScroll += rtbCode_VScroll;
             picCanvas.SizeMode = PictureBoxSizeMode.Normal;
             picCanvas.Paint += PicCanvas_Paint;
-            //picCanvas.MouseDown += PicCanvas_MouseDown;
             UpdatePictureBoxSize();
         }
 
@@ -54,21 +55,6 @@ namespace WindowsFormsApp1
             UpdatePictureBoxSize();
             picCanvas.Invalidate();
         }
-
-        //private void PicCanvas_MouseDown(object sender, MouseEventArgs e)
-        //{
-        //    int canvasX = e.X / pixelSize;
-        //    int canvasY = e.Y / pixelSize;
-
-        //    if (canvasX >= 0 && canvasX < drawingCanvas.Size &&
-        //        canvasY >= 0 && canvasY < drawingCanvas.Size)
-        //    {
-        //        drawingCanvas.ActualX = canvasX;
-        //        drawingCanvas.ActualY = canvasY;
-        //        drawingCanvas.board[canvasX, canvasY] = drawingCanvas.BrushColor;
-        //        picCanvas.Invalidate();
-        //    }
-        //}
         private void DrawWallEPositionIndicator(Graphics g)
         {
             if (drawingCanvas == null) return;
@@ -76,20 +62,16 @@ namespace WindowsFormsApp1
             int x = drawingCanvas.ActualX;
             int y = drawingCanvas.ActualY;
 
-            // Calcular posición en el PictureBox
             int screenX = x * pixelSize;
             int screenY = y * pixelSize;
 
-            // Dibujar un indicador "X" roja
             using (Pen redPen = new Pen(Color.Blue, 2))
             {
-                // Dibujar X
                 g.DrawLine(redPen, screenX + 2, screenY + 2,
                            screenX + pixelSize - 2, screenY + pixelSize - 2);
                 g.DrawLine(redPen, screenX + pixelSize - 2, screenY + 2,
                            screenX + 2, screenY + pixelSize - 2);
 
-                // Dibujar círculo alrededor
                 g.DrawEllipse(redPen, screenX + 2, screenY + 2,
                               pixelSize - 4, pixelSize - 4);
             }
@@ -184,10 +166,9 @@ namespace WindowsFormsApp1
         private void executeButton_Click(object sender, EventArgs e)
         {
             richTextBox1.Text = string.Empty;
-            string codigoFuente = TextEditor.Text;
             Context context = new Context();
             List<CompilingError> errors = new List<CompilingError>();
-
+            string codigoFuente = TextEditor.Text;
             var lexer = Compiling.Lexical;
             var tokens = lexer.GetTokens(codigoFuente, errors);
             Parser parser = new Parser(
@@ -197,16 +178,24 @@ namespace WindowsFormsApp1
                 context,
                 errors
             );
-
-            ProgramNode block = parser.ParseProgram();
-            block.checksemantic(context, errors);
-
             if (errors.Count == 0)
             {
-                block.Execute();
-                foreach (CompilingError item in errors)
+                ProgramNode block = parser.ParseProgram();
+                block.checksemantic(context, errors);
+                if (errors.Count == 0)
                 {
-                    richTextBox1.Text += item.ToString() + "\n";
+                    block.Execute();
+                    foreach (CompilingError item in errors)
+                    {
+                        richTextBox1.Text += item.ToString() + "\n";
+                    }
+                }
+                else
+                {
+                    foreach (CompilingError item in errors)
+                    {
+                        richTextBox1.Text += item.ToString() + "\n";
+                    }
                 }
             }
             else
@@ -260,6 +249,22 @@ namespace WindowsFormsApp1
             pnlLineNumbers.Invalidate();
         }
 
-        
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+
+
+            richTextBox1.Text = string.Empty;
+
+            int initialSize = 50;
+            drawingCanvas.Resize(initialSize); 
+            drawingCanvas.ActualX = 0;       
+            drawingCanvas.ActualY = 0;        
+
+            numericUpDown1.Value = initialSize;
+
+            UpdatePictureBoxSize();
+            picCanvas.Invalidate();
+            pnlLineNumbers.Invalidate();
+        }
     }
 }

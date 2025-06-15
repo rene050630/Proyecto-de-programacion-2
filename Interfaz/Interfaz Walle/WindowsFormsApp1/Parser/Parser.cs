@@ -4,7 +4,6 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-//revisar expresiones
 namespace WindowsFormsApp1
 {
     public class Parser
@@ -126,7 +125,7 @@ namespace WindowsFormsApp1
                 }
                 else if (Operator.value == TokenValues.Div)
                 {
-                    expression = new Div(stream.Previous().codeLocation, expression, right);
+                    expression = new Div(stream.Previous().codeLocation, expression, right, errors);
                 }
             }
             return expression;
@@ -279,12 +278,10 @@ namespace WindowsFormsApp1
                 {
                     stream.MoveNext(1);
                 }
-
-                // Saltar EOLs
                 while (stream.Match(TokenType.EOL)) ;
             }
         }
-        public bool Synchronize(CompilingError error) //Recupera el análisis después de un error
+        public bool Synchronize(CompilingError error)
         {
             errors.Add(error);
             while (!stream.End)
@@ -323,7 +320,6 @@ namespace WindowsFormsApp1
         public Statement VarDeclaration(Expression expresions, CodeLocation location)
         {
             Expression initializer = expression();
-            Console.WriteLine(initializer.Value);
             return new VariableDec(expresions, initializer, location, context);
         }
         public Statement Declaration()
@@ -332,13 +328,10 @@ namespace WindowsFormsApp1
             if (stream.Match(TokenType.Identifier))
             {
                 stream.MoveNext(-1);
-                Console.WriteLine(stream.Peek().value);
                 CodeLocation loc = stream.Peek().codeLocation;
                 Expression expresions = expression();
                 if (stream.Match(TokenValues.Assign))
                 {
-                    Console.WriteLine(stream.Previous().value);
-                    Console.WriteLine(stream.Peek().value);
                     statement = VarDeclaration(expresions, loc);
                 }
             }
@@ -458,7 +451,6 @@ namespace WindowsFormsApp1
             string LabelName = null;
             Expression expr = null;
             var location = stream.LookAhead().codeLocation;
-            Console.WriteLine(stream.LookAhead().value);
             stream.Consume(TokenValues.OpenSquareBracket, "A [ was expected"); // '['
 
             if (stream.Match(TokenType.Identifier))
@@ -490,7 +482,7 @@ namespace WindowsFormsApp1
             z = expression();
 
             stream.Consume(TokenValues.ClosedBracket, "A ) was expected"); // ')'
-            return new IsCanvasColor(location, x, y, z, Canvas, errors);
+            return new IsCanvasColor(location, x, y, z, Canvas);
         }
 
         private IsBrushSize ParseIsBrushSize()

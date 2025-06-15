@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 using System.Data.Common;
+using System.Runtime.Remoting;
 
 namespace WindowsFormsApp1
 {
@@ -12,27 +13,18 @@ namespace WindowsFormsApp1
         Dictionary<string, string> texts = new Dictionary<string, string>();
 
         public IEnumerable<string> Keywords { get { return keywords.Keys; } }
-
-        /* Associates an operator symbol with the correspondent token value */
         public void RegisterOperator(string op, string tokenValue)
         {
             this.operators[op] = tokenValue;
         }
-
-        /* Associates a keyword with the correspondent token value */
         public void RegisterKeyword(string keyword, string tokenValue)
         {
             this.keywords[keyword] = tokenValue;
         }
-
-        /* Associates a Text literal starting delimiter with their correspondent ending delimiter */
         public void RegisterText(string start, string end)
         {
             this.texts[start] = end;
         }
-
-
-        /* Matches a new symbol in the code and read it from the string. The new symbol is added to the token list as an operator. */
         private bool MatchSymbol(TokenReader stream, List<Token> tokens)
         {
             foreach (var op in operators.Keys.OrderByDescending(k => k.Length))
@@ -43,9 +35,6 @@ namespace WindowsFormsApp1
                 }
             return false;
         }
-
-        /* Matches a Text part in the code and read the literal from the stream.
-        The tokens list is updated with the new string token and errors is updated with new errors if detected. */
         private bool MatchText(TokenReader stream, List<Token> tokens, List<CompilingError> errors)
         {
             foreach (var start in texts.Keys.OrderByDescending(k => k.Length))
@@ -61,8 +50,6 @@ namespace WindowsFormsApp1
             }
             return false;
         }
-
-        /* Returns all tokens read from the code and populate the errors list with all lexical errors detected. */
         public IEnumerable<Token> GetTokens(string code, List<CompilingError> errors)
         {
             List<Token> tokens = new List<Token>();
@@ -112,9 +99,6 @@ namespace WindowsFormsApp1
             tokens.Add(new Token(TokenType.End, "END", stream.Location));
             return tokens;
         }
-
-        /* Allows to read from a string numbers, identifiers and matching some prefix. 
-        It has some useful methods to do that */
         class TokenReader
         {
             string code;
@@ -138,8 +122,6 @@ namespace WindowsFormsApp1
                     };
                 }
             }
-
-            /* Peek the next character */
             public char Peek()
             {
                 if (pos < 0 || pos >= code.Length)
@@ -182,9 +164,9 @@ namespace WindowsFormsApp1
             public bool ValidIdCharacter(char c, bool begining)
             {
                 if (begining)
-                    return char.IsLetter(c); // Solo letras al inicio
+                    return char.IsLetter(c);
                 else
-                    return char.IsLetterOrDigit(c) || c == '_'; // Letras, números o _ después
+                    return char.IsLetterOrDigit(c) || c == '_';
             }
 
             public bool ReadID(out string id)
@@ -192,11 +174,9 @@ namespace WindowsFormsApp1
                 id = "";
                 while (!EOL && ValidIdCharacter(Peek(), id.Length == 0))
                     id += ReadAny();
-
-                // Verificar si el identificador es inválido
                 if (id.Length > 0 && (id[0] == '_' || char.IsDigit(id[0])))
                 {
-                    return false; // Opcional: no agregar el token
+                    return false;
                 }
 
                 return id.Length > 0;
@@ -209,17 +189,11 @@ namespace WindowsFormsApp1
                     number += ReadAny();
                 if (!EOL && Match("."))
                 {
-                    // read decimal part
-                    number += '.';
-                    while (!EOL && char.IsDigit(Peek()))
-                        number += ReadAny();
+                    throw new CompilingError(new CodeLocation(), ErrorCode.Expected, ". is not allowed");
                 }
 
                 if (number.Length == 0)
                     return false;
-
-                // Load Number posfix, i.e., 34.0F
-                // Not supported exponential formats: 1.3E+4
                 while (!EOL && char.IsLetterOrDigit(Peek()))
                     number += ReadAny();
 

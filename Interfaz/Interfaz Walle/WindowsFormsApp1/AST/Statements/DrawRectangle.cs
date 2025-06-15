@@ -118,9 +118,7 @@ namespace WindowsFormsApp1
                 errors.Add(new CompilingError(height.location, ErrorCode.Invalid, $"Invalid height: {heightInt}. It requires to be ≥ 1"));
                 return;
             }
-            // Dibujar rectángulo
             Canvas.DrawRectangleOutline(centerX, centerY, widthInt, heightInt);
-            // Actualizar posición de Wall-E
             Canvas.MoveTo(centerX, centerY);
         }
     }

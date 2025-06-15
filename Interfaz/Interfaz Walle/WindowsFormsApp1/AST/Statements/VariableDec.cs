@@ -28,6 +28,11 @@ namespace WindowsFormsApp1
         {
             value.checksemantic(context, errors);
             context.SetType(Name.ToString(), value.Type);
+            if (context.GetType(Name.ToString()) == ExpressionType.Text)
+            {
+                errors.Add(new CompilingError(location, ErrorCode.UndefinedLabel, "Variable cannot be text"));
+                return false;
+            }
             return true;
         }
         public override string ToString()

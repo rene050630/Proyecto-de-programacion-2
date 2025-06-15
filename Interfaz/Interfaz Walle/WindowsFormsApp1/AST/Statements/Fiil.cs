@@ -12,11 +12,9 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            // 2. Obtener posición actual
             int startX = Canvas.ActualX;
             int startY = Canvas.ActualY;
             int canvasSize = Canvas.Size;
-            // 3. Chequeo semántico: posición válida
             if (startX < 0 || startX >= canvasSize || startY < 0 || startY >= canvasSize)
             {
                 errors.Add(new CompilingError(location, ErrorCode.Invalid, "Wall-E is outside of the canvas"));

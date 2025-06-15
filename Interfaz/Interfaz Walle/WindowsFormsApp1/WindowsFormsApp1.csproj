@@ -62,7 +62,6 @@
     <Compile Include="AST\Statements\DrawLine.cs" />
     <Compile Include="AST\Statements\DrawRectangle.cs" />
     <Compile Include="AST\Expression.cs" />
-    <Compile Include="AST\Statements\ExpressionEvaluator.cs" />
     <Compile Include="AST\ExpressionType.cs" />
     <Compile Include="AST\Statements\Fiil.cs" />
     <Compile Include="AST\Statements\GetActualX.cs" />

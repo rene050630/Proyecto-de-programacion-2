@@ -31,7 +31,6 @@ namespace WindowsFormsApp1
             }
             return false;
         }
-        //veo si el token tiene el tipo que le digo
         public bool Match(TokenType type)
         {
             if (CheckType(type))

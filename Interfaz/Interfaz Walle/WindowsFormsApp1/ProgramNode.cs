@@ -32,7 +32,6 @@ namespace WindowsFormsApp1
             while (position < Statements.Count)
             {
                 Statements[position].Execute();
-
                 if (Statements[position] is GoTo gotoStatement)
                 {
                     if (gotoStatement.ShouldJump())

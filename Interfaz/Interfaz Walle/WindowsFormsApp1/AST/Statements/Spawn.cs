@@ -16,7 +16,6 @@ namespace WindowsFormsApp1
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            // 1. Validar que las expresiones X e Y sean numéricas
             if (!X.checksemantic(context, errors) || X.Type != ExpressionType.Number)
             {
                 errors.Add(new CompilingError(X.location, ErrorCode.Invalid,
@@ -32,12 +31,12 @@ namespace WindowsFormsApp1
             }
             X.Evaluate();
             Y.Evaluate();
-            //if (Canvas.IsSpawnCalled)
-            //{
-            //    errors.Add(new CompilingError(location, ErrorCode.Invalid,
-            //        "Spawn can only be called once"));
-            //    return false;
-            //}
+            if (Canvas.IsSpawnCalled)
+            {
+                errors.Add(new CompilingError(location, ErrorCode.Invalid,
+                    "Spawn can only be called once"));
+                return false;
+            }
             if (Convert.ToInt32(X.Value) < 0 || Convert.ToInt32(X.Value) >= Canvas.Size || Convert.ToInt32(Y.Value) < 0 || Convert.ToInt32(Y.Value) >= Canvas.Size)
             {
                 errors.Add(new CompilingError(location, ErrorCode.Invalid,

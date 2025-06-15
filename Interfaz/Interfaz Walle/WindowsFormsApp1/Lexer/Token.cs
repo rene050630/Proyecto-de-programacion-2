@@ -51,8 +51,7 @@ namespace WindowsFormsApp1
         public const string True = "true";
         public const string OpenBracket = "OpenBracket"; // ( 
         public const string ClosedBracket = "ClosedBracket"; // )
-                                                             // public const string OpenQM = "quotation marks"; // "
-                                                             // public const string CloseQM = "quotation marks"; // "
+                                                         
 
         public const string Or = "Or"; // ||
         public const string And = "And"; // && 

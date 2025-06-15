@@ -9,16 +9,14 @@ namespace WindowsFormsApp1
         Expression horizontal;
         Expression vertical;
         Canvas Canvas;
-        List <CompilingError> errors;
         public override object Value { get; set; }
         public override ExpressionType Type { get; set; }
-        public IsCanvasColor(CodeLocation location, Expression color, Expression vertical, Expression horizontal, Canvas canvas, List<CompilingError> errors) : base(location)
+        public IsCanvasColor(CodeLocation location, Expression color, Expression vertical, Expression horizontal, Canvas canvas) : base(location)
         {
             this.color = color;
             this.horizontal = horizontal;
             this.vertical = vertical;
             Canvas = canvas;
-            this.errors = errors;
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
@@ -37,16 +35,20 @@ namespace WindowsFormsApp1
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "color requires to be a string"));
                 return false;
             }
+            if (color.Value == null)
+            {
+                errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "Colors cannot be null"));
+                return false;
+            }
             color.Evaluate();
             if (color.Value is string stringLiteral &&
-                !context.IsValidColor(stringLiteral))
+                !context.IsValidColor(stringLiteral.ToLower()))
             {
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid,
                     $"Color '{stringLiteral}' is invalid. Allowed colors: {string.Join(", ", context.ValidColors)}"
                 ));
                 return false;
             }
-            color.Evaluate();
             vertical.Evaluate();
             horizontal.Evaluate();
             int horizontalInt = Convert.ToInt32(horizontal.Value);

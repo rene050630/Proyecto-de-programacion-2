@@ -36,7 +36,7 @@ namespace WindowsFormsApp1
                     __LexicalProcess.RegisterOperator("<", TokenValues.Less);
 
                     __LexicalProcess.RegisterText("\"", "\"");
-                    // Comandos clave
+
                     __LexicalProcess.RegisterKeyword("Spawn", TokenValues.Spawn);
                     __LexicalProcess.RegisterKeyword("Color", TokenValues.Color);
                     __LexicalProcess.RegisterKeyword("Size", TokenValues.Size);
@@ -46,7 +46,6 @@ namespace WindowsFormsApp1
                     __LexicalProcess.RegisterKeyword("Fill", TokenValues.Fill);
                     __LexicalProcess.RegisterKeyword("GoTo", TokenValues.GoTo);
 
-                    // Funciones predefinidas
                     __LexicalProcess.RegisterKeyword("GetActualX", TokenValues.GetActualX);
                     __LexicalProcess.RegisterKeyword("GetActualY", TokenValues.GetActualY);
                     __LexicalProcess.RegisterKeyword("GetCanvasSize", TokenValues.GetCanvasSize);

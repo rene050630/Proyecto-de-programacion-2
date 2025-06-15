@@ -10,19 +10,9 @@ namespace WindowsFormsApp1
         public bool IsValidColor(string color) => ValidColors.Contains(color);
         public List<string> Labels { get; } = new List<string>();
         private Dictionary<string, int> _labelPositions = new Dictionary<string, int>();
-        private int _currentPosition;
-
         public void RegisterLabel(string label, int position)
         {
             _labelPositions[label] = position;
-        }
-
-        public void JumpToLabel(string label)
-        {
-            if (_labelPositions.TryGetValue(label, out int pos))
-            {
-                _currentPosition = pos;
-            }
         }
         public bool LabelExists(string label)
         {

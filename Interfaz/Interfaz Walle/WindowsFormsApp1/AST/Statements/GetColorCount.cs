@@ -60,8 +60,13 @@ namespace WindowsFormsApp1
                 return false;
             }
             color.Evaluate();
+            if (color.Value == null)
+            {
+                errors.Add(new CompilingError(color.location, ErrorCode.Invalid, "Colors cannot be null"));
+                return false;
+            }
             if (color.Value is string stringLiteral &&
-                !context.IsValidColor(stringLiteral))
+                !context.IsValidColor(stringLiteral.ToLower()))
             {
                 errors.Add(new CompilingError(color.location, ErrorCode.Invalid,
                     $"Color '{stringLiteral}' is invalid. Allowed colors: {string.Join(", ", context.ValidColors)}"
@@ -103,7 +108,7 @@ namespace WindowsFormsApp1
             Colors colorValue = Color();
             Value = Canvas.GetColorCount(X1, X2, Y1, Y2, colorValue);
         }
-        public Colors Color()
+        private Colors Color()
         {
             string colorValue = (string)color.Value;
             switch (colorValue.ToLower())

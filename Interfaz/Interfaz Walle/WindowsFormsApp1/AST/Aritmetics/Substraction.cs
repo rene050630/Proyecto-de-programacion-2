@@ -18,12 +18,12 @@ namespace WindowsFormsApp1
             Right.Evaluate();
             Left.Evaluate();
 
-            Value = Convert.ToInt32(Right.Value) - Convert.ToInt32(Left.Value);
+            Value = Convert.ToInt32(Left.Value) - Convert.ToInt32(Right.Value);
         }
         public override bool checksemantic(Context context, List<CompilingError> errors)
         {
-            bool right = checksemantic(context, errors);
-            bool left = checksemantic(context, errors);
+            bool left = Left.checksemantic(context, errors);
+            bool right = Right.checksemantic(context, errors);
             if (Right.Type != ExpressionType.Number && Left.Type != ExpressionType.Number)
             {
                 errors.Add(new CompilingError(location, ErrorCode.Invalid, "Substract operation requires numeric operands"));

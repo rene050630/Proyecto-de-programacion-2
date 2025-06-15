@@ -27,22 +27,21 @@ namespace WindowsFormsApp1
         {
             for (int i = 0; i < Size; i++)
                 for (int j = 0; j < Size; j++)
-                    board[i, j] = Colors.White;
+                    board[i, j] = Colors.Transparent;
         }
         public void Resize(int newSize)
         {
-            var newBoard = new Colors[newSize, newSize];
-            for (int i = 0; i < newSize; i++)
-                for (int j = 0; j < newSize; j++)
-                    newBoard[i, j] = Colors.White;
-            int copySize = Math.Min(newSize, Size);
-            for (int i = 0; i < copySize; i++)
-                for (int j = 0; j < copySize; j++)
-                    newBoard[i, j] = board[i, j];
-            board = newBoard;
             Size = newSize;
-            ActualX = Math.Min(ActualX, newSize - 1);
-            ActualY = Math.Min(ActualY, newSize - 1);
+            board = new Colors[newSize, newSize];
+            for (int x = 0; x < newSize; x++)
+            {
+                for (int y = 0; y < newSize; y++)
+                {
+                    board[x, y] = Colors.Transparent;
+                }
+            }
+            ActualX = 0;
+            ActualY = 0;
         }
         public void MoveTo(int x, int y)
         {
@@ -83,7 +82,6 @@ namespace WindowsFormsApp1
         public Colors GetPixel(int x, int y) => board[x, y];
         public void Spawn(int x, int y)
         {
-            // Lógica para posicionar a Wall-E
             if (IsPositionValid(x, y))
             {
                 ActualX = x;
@@ -97,17 +95,13 @@ namespace WindowsFormsApp1
 
             for (int step = 0; step < distance; step++)
             {
-                // Calcular nueva posición
                 int newX = ActualX + dirX;
                 int newY = ActualY + dirY;
 
-                // Detener si se sale del canvas
                 if (!IsPositionValid(newX, newY)) break;
 
                 ActualX = newX;
                 ActualY = newY;
-
-                // Pintar área del pincel
                 for (int dx = -radius; dx <= radius; dx++)
                     for (int dy = -radius; dy <= radius; dy++)
                         SetPixel(ActualX + dx, ActualY + dy);
@@ -172,21 +166,19 @@ namespace WindowsFormsApp1
         }
         public void DrawRectangleOutline(int cx, int cy, int w, int h)
         {
-            // Calcular límites del rectángulo
+
             int left = cx - w / 2;
             int right = cx + (w - 1) / 2;
             int top = cy - h / 2;
             int bottom = cy + (h - 1) / 2;
             int halfBrush = BrushSize / 2;
 
-            // Dibujar bordes horizontales
             for (int x = left; x <= right; x++)
             {
                 PaintWithBrush(x, top, halfBrush);
                 PaintWithBrush(x, bottom, halfBrush);
             }
 
-            // Dibujar bordes verticales (excluyendo esquinas)
             for (int y = top + 1; y < bottom; y++)
             {
                 PaintWithBrush(left, y, halfBrush);
@@ -203,7 +195,8 @@ namespace WindowsFormsApp1
             if (x1 > Size || y1 > Size || x2 > Size || y2 > Size) return 0;
             if (x1 < x2) (x1, x2) = (x2, x1);
             if (y1 > y2) (y1, y2) = (y2, y1);
-            for (int i = x1; i <= x2; i++)
+            
+            for (int i = x2; i <= x1; i++)
             {
                 for (int j = y1; j <= y2; j++)
                 {
@@ -224,12 +217,10 @@ namespace WindowsFormsApp1
             {
                 var (x, y) = queue.Dequeue();
 
-                // 7. Pintar solo si sigue siendo el color objetivo
                 if (GetPixel(x, y) == targetColor)
                 {
                     SetPixel(x, y);
 
-                    // 8. Explorar vecinos en 4 direcciones
                     ExploreNeighbor(x + 1, y, queue, visited, targetColor);
                     ExploreNeighbor(x - 1, y, queue, visited, targetColor);
                     ExploreNeighbor(x, y + 1, queue, visited, targetColor);
@@ -239,11 +230,10 @@ namespace WindowsFormsApp1
         }
         private void ExploreNeighbor(int x, int y, Queue<(int x, int y)> queue, bool[,] visited, Colors targetColor)
         {
-            // 9. Validar límites del canvas
+
             if (!IsPositionValid(x, y))
                 return;
 
-            // 10. Evitar reprocesar celdas
             if (!visited[x, y] && GetPixel(x, y) == targetColor)
             {
                 visited[x, y] = true;

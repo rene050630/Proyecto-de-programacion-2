@@ -43,6 +43,7 @@ namespace WindowsFormsApp1
             this.ResizeButton = new System.Windows.Forms.Button();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.btnReset = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.picCanvas)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
@@ -172,11 +173,22 @@ namespace WindowsFormsApp1
             this.richTextBox1.TabIndex = 11;
             this.richTextBox1.Text = "";
             // 
+            // btnReset
+            // 
+            this.btnReset.Location = new System.Drawing.Point(1393, 54);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(92, 38);
+            this.btnReset.TabIndex = 12;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1628, 761);
+            this.Controls.Add(this.btnReset);
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.ResizeButton);
@@ -214,6 +226,7 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Button ResizeButton;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Button btnReset;
     }
 }
 
